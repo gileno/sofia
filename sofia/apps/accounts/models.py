@@ -13,7 +13,6 @@ from django.contrib.auth.models import (
 )
 from django.utils.http import int_to_base36
 from django.utils.translation import ugettext_lazy as _
-from django.core import validators
 from django.core.urlresolvers import reverse
 
 
@@ -22,10 +21,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(
         _('Username'), max_length=30, unique=True, validators=[
             validators.RegexValidator(
-                re.compile('^[\w.@+-]+$'), 
-                _('Enter a valid username. '
-                'This value may contain only letters, numbers '
-                'and @/./+/-/_ characters.'), 'invalid'
+                re.compile('^[\w.@+-]+$'),
+                _(
+                    'Enter a valid username. '
+                    'This value may contain only letters, numbers '
+                    'and @/./+/-/_ characters.'
+                ), 'invalid'
             )
         ], blank=True,
     )
@@ -66,14 +67,12 @@ class ResetPassword(models.Model):
     )
     key = models.CharField(_('Confirmation key'), unique=True, max_length=100)
     created = models.DateTimeField(_('Created'), auto_now_add=True)
-    confirmed_on = models.DateTimeField(_('Confirmed on'), null=True, blank=True)
+    confirmed_on = models.DateTimeField(
+        _('Confirmed on'), null=True, blank=True
+    )
 
     def send_mail(self):
-        context = {
-            'user': self.user,
-            'reset_url': reverse('set_password', args=[self.key])
-        }
-        subject = _('Reset password')
+        pass
 
     def __unicode__(self):
         return 'Reset password for {0}'.format(self.user)
@@ -82,7 +81,7 @@ class ResetPassword(models.Model):
         if not self.key:
             chars = string.ascii_uppercase + string.digits
             salt = self.user.email
-            random_str = ''.join([random.choice(chars) for x in xrange(5)])
+            random_str = ''.join([random.choice(chars) for x in range(5)])
             self.key = hashlib.sha224(random_str + salt).hexdigest()[:100]
         return super(ResetPassword, self).save(*args, **kwargs)
 

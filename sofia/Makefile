@@ -1,5 +1,5 @@
 pep8:
-	@flake8 * --ignore=F403,F401 --exclude=requirements.txt,*.pyc,*.md,Makefile,LICENSE,*.in,*.conf,gunicorn_start
+	@flake8 * --ignore=F403,F401 --exclude=requirements.txt,*.pyc,*.md,Makefile,LICENSE,*.in,*.conf,gunicorn_start,migrations*
 
 clean:
 	@find . -name "*.pyc" -delete
