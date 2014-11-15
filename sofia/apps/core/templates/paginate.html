@@ -1,0 +1,22 @@
+{% load l10n %}
+{% if is_paginated %}
+<ul class="pagination">
+    {% if page_obj.has_previous %}
+    <li class="previous"><a href="?page={{ page_obj.previous_page_number|unlocalize }}{{ getvars }}{{ anchor|default:"" }}">Anterior</a></li>
+    {% endif %}
+    {% for page in pages %}
+    {% if page %}
+        {% if page == page_obj.number %}
+            <li class="active"><a href="?page={{ page|unlocalize }}{{ getvars }}{{ anchor|default:"" }}">{{ page }}</a></li>
+        {% else %}
+            <li><a href="?page={{ page|unlocalize }}{{ getvars }}{{ anchor|default:"" }}">{{ page }}</a></li>
+        {% endif %}
+    {% else %}
+        <li class="disabled"><a href="javascript:void(0);">...</a></li>
+    {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+        <li class="next"><a href="?page={{ page_obj.next_page_number|unlocalize }}{{ getvars }}{{ anchor|default:"" }}">Próxima</a></li>
+    {% endif %}
+</ul>
+{% endif %}
