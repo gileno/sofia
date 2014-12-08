@@ -76,7 +76,7 @@
                                         <li>
                                             <form role="search" class="search-box">
                                                 <div class="form-group has-feedback">
-                                                    <input type="text" class="form-control" placeholder="Search">
+                                                    <input type="text" class="form-control" placeholder="{% trans 'Pesquisar' %}">
                                                     <i class="fa fa-search form-control-feedback"></i>
                                                 </div>
                                             </form>
@@ -84,34 +84,39 @@
                                     </ul>
                                 </div>
                                 <div class="btn-group dropdown">
-                                    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {% trans 'Entrar' %}</button>
+                                    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
+                                    {% if user.is_authenticated %}
+                                        {{ user }}
+                                    {% else %}
+                                        {% trans 'Entrar' %}
+                                    {% endif %}
+                                    </button>
                                     <ul class="dropdown-menu dropdown-menu-right dropdown-animation">
                                         <li>
-                                            <form class="login-form">
+                                            {% if user.is_authenticated %}
+                                            <div class="panel-body text-right">
+                                                <a href="{% url 'accounts:logout' %}" class="btn btn-group btn-danger btn-sm">{% trans 'Sair' %}</a>
+											</div>
+                                            {% else %}
+                                            <form class="login-form" action="{% url 'accounts:login' %}?next={{ request.get_full_path }}" method="post">
+                                                {% csrf_token %}
                                                 <div class="form-group has-feedback">
-                                                    <label class="control-label">Username</label>
-                                                    <input type="text" class="form-control" placeholder="">
+                                                    <label class="control-label">{% trans 'E-mail/Usuário' %}</label>
+                                                    <input type="text" class="form-control" placeholder="" name="username">
                                                     <i class="fa fa-user form-control-feedback"></i>
                                                 </div>
                                                 <div class="form-group has-feedback">
-                                                    <label class="control-label">Password</label>
-                                                    <input type="password" class="form-control" placeholder="">
+                                                    <label class="control-label">{% trans 'Senha' %}</label>
+                                                    <input type="password" class="form-control" placeholder="" name='password'>
                                                     <i class="fa fa-lock form-control-feedback"></i>
                                                 </div>
-                                                <button type="submit" class="btn btn-group btn-dark btn-sm">Log In</button>
-                                                <span>or</span>
-                                                <button type="submit" class="btn btn-group btn-default btn-sm">Sing Up</button>
+                                                <button type="submit" class="btn btn-group btn-dark btn-sm">{% trans 'Entrar' %}</button>
+                                                <a href="" class="btn btn-group btn-default btn-sm">{% trans 'Cadastrar' %}</a>
                                                 <ul>
-                                                    <li><a href="#">Forgot your password?</a></li>
-                                                </ul>
-                                                <div class="divider"></div>
-                                                <span class="text-center">Login with</span>
-                                                <ul class="social-links clearfix">
-                                                    <li class="facebook"><a target="_blank" href="http://www.facebook.com"><i class="fa fa-facebook"></i></a></li>
-                                                    <li class="twitter"><a target="_blank" href="http://www.twitter.com"><i class="fa fa-twitter"></i></a></li>
-                                                    <li class="googleplus"><a target="_blank" href="http://plus.google.com"><i class="fa fa-google-plus"></i></a></li>
+                                                    <li><a href="#">{% trans 'Esqueceu sua senha?' %}</a></li>
                                                 </ul>
                                             </form>
+                                            {% endif %}
                                         </li>
                                     </ul>
                                 </div>
@@ -298,7 +303,7 @@
     <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 
     <!-- Modernizr javascript -->
-    <script type="text/javascript" src="{% static 'plugins/modernizr.js"></script>
+    <script type="text/javascript" src="{% static 'plugins/modernizr.js' %}"></script>
 
     <!-- Magnific Popup javascript -->
     <script type="text/javascript" src="{% static 'plugins/magnific-popup/jquery.magnific-popup.min.js' %}"></script>

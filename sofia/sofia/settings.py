@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     # libs
     'gunicorn',
+    'widget_tweaks',
     # apps
     'apps.core',
     'apps.accounts',
