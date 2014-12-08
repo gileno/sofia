@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+
+{% block body %}
+<section class="main-container" style="margin-top: 0px;">
+	<div class="container">
+		<div class="row">
+			<!-- main start -->
+			<!-- ================ -->
+			<div class="main col-md-6 col-md-offset-3">
+                {% url 'core:index' as url_index %}
+                {% blocktrans%}
+				<h1 class="title">Ooops! Página não encontrada - 404</h1>
+				<br>
+				<p>A URL solicitada não foi encontrada neste servidor. Certifique-se de que o endereço do site exibido na barra de endereços do seu navegador está escrito e formatado corretamente ou <a href="{{ url_index }}">retorne a página inicial.</a></p>
+                {% endblocktrans %}
+				<form role="search">
+					<div class="form-group has-feedback">
+						<input type="text" class="form-control" placeholder="{% trans 'Pesquisar' %}">
+						<i class="fa fa-search form-control-feedback"></i>
+					</div>
+				</form>
+			</div>
+			<!-- main end -->
+		</div>
+	</div>
+</section>
+{% endblock %}
