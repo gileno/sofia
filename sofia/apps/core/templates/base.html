@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+{% load static i18n %}
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% trans 'SOFIA - Plataforma Educacional' %}{% endblock %}</title>
+    <meta name="description" content="{% block description %}SOFIA - Plataforma Educacional{% endblock %}">
+    <meta name="author" content="gilenofilho.com.br">
+
+    <!-- Mobile Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Web Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700,300&amp;subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'bootstrap/css/bootstrap.css' %}" rel="stylesheet">
+
+    <!-- Font Awesome CSS -->
+    <link href="{% static 'fonts/font-awesome/css/font-awesome.css' %}" rel="stylesheet">
+
+    <!-- Fontello CSS -->
+    <link href="{% static 'fonts/fontello/css/fontello.css' %}" rel="stylesheet">
+
+    <!-- Plugins -->
+    <link href="{% static 'plugins/rs-plugin/css/settings.css' %}" media="screen" rel="stylesheet">
+    <link href="{% static 'plugins/rs-plugin/css/extralayers.css' %}" media="screen" rel="stylesheet">
+    <link href="{% static 'plugins/magnific-popup/magnific-popup.css' %}" rel="stylesheet">
+    <link href="{% static 'css/animations.css' %}" rel="stylesheet">
+    <link href="{% static 'plugins/owl-carousel/owl.carousel.css' %}" rel="stylesheet">
+
+    <!-- iDea core CSS file -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    <!-- Color Scheme (In order to change the color scheme, replace the red.css with the color scheme that you prefer)-->
+    <link href="{% static 'css/skins/red.css' %}" rel="stylesheet">
+
+    <!-- Custom css -->
+    <link href="{% static 'css/custom.css' %}" rel="stylesheet">
+</head>
+
+<!-- body classes:
+        "boxed": boxed layout mode e.g. <body class="boxed">
+        "pattern-1 ... pattern-9": background patterns for boxed layout mode e.g. <body class="boxed pattern-1">
+-->
+<body class="front">
+    <!-- scrollToTop -->
+    <!-- ================ -->
+    <div class="scrollToTop"><i class="icon-up-open-big"></i></div>
+
+    <!-- page wrapper start -->
+    <!-- ================ -->
+    <div class="page-wrapper">
+
+        <!-- header-top start -->
+        <!-- ================ -->
+        <div class="header-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12">
+
+                        <!-- header-top-second start -->
+                        <!-- ================ -->
+                        <div id="header-top-second"  class="clearfix">
+
+                            <!-- header top dropdowns start -->
+                            <!-- ================ -->
+                            <div class="header-top-dropdown">
+                                <div class="btn-group dropdown">
+                                    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown"><i class="fa fa-search"></i> {% trans 'Pesquisar' %}</button>
+                                    <ul class="dropdown-menu dropdown-menu-right dropdown-animation">
+                                        <li>
+                                            <form role="search" class="search-box">
+                                                <div class="form-group has-feedback">
+                                                    <input type="text" class="form-control" placeholder="Search">
+                                                    <i class="fa fa-search form-control-feedback"></i>
+                                                </div>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="btn-group dropdown">
+                                    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {% trans 'Entrar' %}</button>
+                                    <ul class="dropdown-menu dropdown-menu-right dropdown-animation">
+                                        <li>
+                                            <form class="login-form">
+                                                <div class="form-group has-feedback">
+                                                    <label class="control-label">Username</label>
+                                                    <input type="text" class="form-control" placeholder="">
+                                                    <i class="fa fa-user form-control-feedback"></i>
+                                                </div>
+                                                <div class="form-group has-feedback">
+                                                    <label class="control-label">Password</label>
+                                                    <input type="password" class="form-control" placeholder="">
+                                                    <i class="fa fa-lock form-control-feedback"></i>
+                                                </div>
+                                                <button type="submit" class="btn btn-group btn-dark btn-sm">Log In</button>
+                                                <span>or</span>
+                                                <button type="submit" class="btn btn-group btn-default btn-sm">Sing Up</button>
+                                                <ul>
+                                                    <li><a href="#">Forgot your password?</a></li>
+                                                </ul>
+                                                <div class="divider"></div>
+                                                <span class="text-center">Login with</span>
+                                                <ul class="social-links clearfix">
+                                                    <li class="facebook"><a target="_blank" href="http://www.facebook.com"><i class="fa fa-facebook"></i></a></li>
+                                                    <li class="twitter"><a target="_blank" href="http://www.twitter.com"><i class="fa fa-twitter"></i></a></li>
+                                                    <li class="googleplus"><a target="_blank" href="http://plus.google.com"><i class="fa fa-google-plus"></i></a></li>
+                                                </ul>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!--  header top dropdowns end -->
+
+                        </div>
+                        <!-- header-top-second end -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- header-top end -->
+
+        <!-- header start (remove fixed class from header in order to disable fixed navigation mode) -->
+        <!-- ================ -->
+        <header class="header fixed clearfix">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+
+                        <!-- header-left start -->
+                        <!-- ================ -->
+                        <div class="header-left clearfix">
+
+                            <!-- logo -->
+                            <div class="logo">
+                                <h1>
+                                    <a href="{% url 'core:index' %}">
+                                        SOFIA
+                                    </a>
+                                </h1>
+                            </div>
+
+                            <!-- name-and-slogan -->
+                            <div class="site-slogan">
+                                Plataforma Educacional
+                            </div>
+
+                        </div>
+                        <!-- header-left end -->
+
+                    </div>
+                    <div class="col-md-9">
+
+                        <!-- header-right start -->
+                        <!-- ================ -->
+                        <div class="header-right clearfix">
+
+                            <!-- main-navigation start -->
+                            <!-- ================ -->
+                            <div class="main-navigation animated">
+
+                                <!-- navbar start -->
+                                <!-- ================ -->
+                                <nav class="navbar navbar-default" role="navigation">
+                                    <div class="container-fluid">
+
+                                        <!-- Toggle get grouped for better mobile display -->
+                                        <div class="navbar-header">
+                                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                                                <span class="sr-only">Navegação</span>
+                                                <span class="icon-bar"></span>
+                                                <span class="icon-bar"></span>
+                                                <span class="icon-bar"></span>
+                                            </button>
+                                        </div>
+
+                                        <!-- Collect the nav links, forms, and other content for toggling -->
+                                        <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                                            <ul class="nav navbar-nav navbar-right">
+                                                <li class="active">
+                                                    <a href="" class="dropdown-toggle">Início</a>
+                                                </li>
+                                                <li>
+                                                    <a href="index.html" class="dropdown-toggle">Fórum</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                </nav>
+                                <!-- navbar end -->
+
+                            </div>
+                            <!-- main-navigation end -->
+
+                        </div>
+                        <!-- header-right end -->
+
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- header end -->
+        {% block body %}{% endblock %}
+        <!-- footer start -->
+        <!-- ================ -->
+        <footer id="footer">
+
+            <!-- .footer start -->
+            <!-- ================ -->
+            <div class="footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="footer-content">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <p>Lorem ipsum dolor sit amet, consect tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim ven.</p>
+                                        <ul class="social-links circle">
+                                            <li class="facebook"><a target="_blank" href="http://www.facebook.com"><i class="fa fa-facebook"></i></a></li>
+                                            <li class="twitter"><a target="_blank" href="http://www.twitter.com"><i class="fa fa-twitter"></i></a></li>
+                                            <li class="googleplus"><a target="_blank" href="http://plus.google.com"><i class="fa fa-google-plus"></i></a></li>
+                                            <li class="skype"><a target="_blank" href="http://www.skype.com"><i class="fa fa-skype"></i></a></li>
+                                            <li class="linkedin"><a target="_blank" href="http://www.linkedin.com"><i class="fa fa-linkedin"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <ul class="list-icons">
+                                            <li><i class="fa fa-map-marker pr-10"></i> One infinity loop, 54100</li>
+                                            <li><i class="fa fa-phone pr-10"></i> +00 1234567890</li>
+                                            <li><i class="fa fa-fax pr-10"></i> +00 1234567891 </li>
+                                            <li><i class="fa fa-envelope-o pr-10"></i> info@idea.com</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <a href="page-about.html" class="link"><span>Read More</span></a>
+                            </div>
+                        </div>
+                        <div class="space-bottom hidden-lg hidden-xs"></div>
+                    </div>
+                    <div class="space-bottom hidden-lg hidden-xs"></div>
+                </div>
+            </div>
+            <!-- .footer end -->
+
+            <!-- .subfooter start -->
+            <!-- ================ -->
+            <div class="subfooter">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+
+                        </div>
+                        <div class="col-md-6">
+                            <nav class="navbar navbar-default" role="navigation">
+                                <!-- Toggle get grouped for better mobile display -->
+                                <div class="navbar-header">
+                                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-2">
+                                        <span class="sr-only">Navegação</span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                    </button>
+                                </div>
+                                <div class="collapse navbar-collapse" id="navbar-collapse-2">
+                                    <ul class="nav navbar-nav">
+                                        <li><a href="index.html">Home</a></li>
+                                        <li><a href="page-about.html">About</a></li>
+                                        <li><a href="blog-right-sidebar.html">Blog</a></li>
+                                        <li><a href="portfolio-3col.html">Portfolio</a></li>
+                                        <li><a href="page-contact.html">Contact</a></li>
+                                    </ul>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- .subfooter end -->
+
+        </footer>
+        <!-- footer end -->
+
+    </div>
+    <!-- page-wrapper end -->
+
+    <!-- JavaScript files placed at the end of the document so the pages load faster
+    ================================================== -->
+    <!-- Jquery and Bootstap core js files -->
+    <script type="text/javascript" src="{% static 'plugins/jquery.min.js'%}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+
+    <!-- Modernizr javascript -->
+    <script type="text/javascript" src="{% static 'plugins/modernizr.js"></script>
+
+    <!-- Magnific Popup javascript -->
+    <script type="text/javascript" src="{% static 'plugins/magnific-popup/jquery.magnific-popup.min.js' %}"></script>
+
+    <!-- Initialization of Plugins -->
+    <script type="text/javascript" src="{% static 'js/template.js' %}"></script>
+
+    <!-- Custom Scripts -->
+    <script type="text/javascript" src="{% static 'js/custom.js' %}"></script>
+
+</body>
+</html>

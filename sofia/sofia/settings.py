@@ -102,6 +102,13 @@ TEMPLATE_CONTEXT_PROCESSORS = TCP + (
     'django.core.context_processors.request',
 )
 
+# Mail Settings
+DEFAULT_FROM_EMAIL = 'sistema@sofiaplataforma.com.br'
+CONTEXT_EXTRA_MAIL = {
+    'SITE_NAME': 'Sofia - Plataforma Educacional',
+    'SITE_DOMAIN': 'sofiaplataforma.com.br'
+}
+
 # Auth Settings
 from django.conf.global_settings import AUTHENTICATION_BACKENDS as AB
 

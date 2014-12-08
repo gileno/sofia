@@ -15,31 +15,33 @@ from django.utils.http import int_to_base36
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 
+from apps.core.models import BaseModel
+
 
 class User(AbstractBaseUser, PermissionsMixin):
 
     username = models.CharField(
-        _('Username'), max_length=30, unique=True, validators=[
+        _('Usuário'), max_length=30, unique=True, validators=[
             validators.RegexValidator(
                 re.compile('^[\w.@+-]+$'),
                 _(
-                    'Enter a valid username. '
-                    'This value may contain only letters, numbers '
-                    'and @/./+/-/_ characters.'
+                    'Informe um nome de usuário válido. '
+                    'Este valor deve conter apenas letras, números '
+                    'e os caracteres: @/./+/-/_ .'
                 ), 'invalid'
             )
         ], blank=True,
     )
-    name = models.CharField(_('Name'), max_length=100)
+    name = models.CharField(_('Nome'), max_length=100)
     email = models.EmailField(_('E-mail'), unique=True)
     verified_email = models.BooleanField(
-        _('Verified e-mail'), blank=True, default=False
+        _('E-mail verificado'), blank=True, default=False
     )
-    is_staff = models.BooleanField(_('Staff'), default=False)
-    is_active = models.BooleanField(_('Active'), default=True)
-    date_joined = models.DateTimeField(_('Date joined'), auto_now_add=True)
-    about = models.TextField(_('Bio'), blank=True)
-    location = models.CharField(_('Location'), max_length=255, blank=True)
+    is_staff = models.BooleanField(_('Equipe'), default=False)
+    is_active = models.BooleanField(_('Ativo'), default=True)
+    date_joined = models.DateTimeField(_('Data de Entrada'), auto_now_add=True)
+    about = models.TextField(_('Sobre'), blank=True)
+    location = models.CharField(_('Localização'), max_length=255, blank=True)
 
     objects = UserManager()
 
@@ -56,26 +58,25 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.name.split(" ")[0]
 
     class Meta:
-        verbose_name = _('User')
-        verbose_name_plural = _('Users')
+        verbose_name = _('Usuário')
+        verbose_name_plural = _('Usuários')
 
 
-class ResetPassword(models.Model):
+class ResetPassword(BaseModel):
 
     user = models.ForeignKey(
-        User, verbose_name=_('User'), related_name='resets'
+        User, verbose_name=_('Usuário'), related_name='resets'
     )
-    key = models.CharField(_('Confirmation key'), unique=True, max_length=100)
-    created = models.DateTimeField(_('Created'), auto_now_add=True)
+    key = models.CharField(_('Chave de confirmação'), unique=True, max_length=100)
     confirmed_on = models.DateTimeField(
-        _('Confirmed on'), null=True, blank=True
+        _('Confirmado em'), null=True, blank=True
     )
 
     def send_mail(self):
         pass
 
     def __unicode__(self):
-        return 'Reset password for {0}'.format(self.user)
+        return 'Nova senha para {0}'.format(self.user)
 
     def save(self, *args, **kwargs):
         if not self.key:
@@ -86,8 +87,8 @@ class ResetPassword(models.Model):
         return super(ResetPassword, self).save(*args, **kwargs)
 
     class Meta:
-        verbose_name = _('Reset Password')
-        verbose_name_plural = _('Reset Passwords')
+        verbose_name = _('Nova Senha')
+        verbose_name_plural = _('Nova Senha')
 
 
 def pre_save_user(sender, instance, **kwargs):

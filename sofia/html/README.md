@@ -1,4 +1,4 @@
 HTML Dir
-=============
+========
 
-This directory is a container for all static html files (design)
+Purchased license: https://wrapbootstrap.com/theme/idea-responsive-website-template-WB0DN19X0
