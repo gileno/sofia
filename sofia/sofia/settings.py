@@ -109,11 +109,12 @@ CONTEXT_EXTRA_MAIL = {
     'SITE_NAME': 'Sofia - Plataforma Educacional',
     'SITE_DOMAIN': 'sofiaplataforma.com.br'
 }
+DEFAULT_SUBJECT_PREFIX = '[SOFIA] '
 
 # Auth Settings
 from django.conf.global_settings import AUTHENTICATION_BACKENDS as AB
 
-AUTHENTICATION_BACKENDS = AB + ('apps.accounts.backends.ModelBackend',)
+AUTHENTICATION_BACKENDS = ('apps.accounts.backends.ModelBackend',)
 
 AUTH_USER_MODEL = 'accounts.User'
 LOGIN_URL = 'accounts:login'

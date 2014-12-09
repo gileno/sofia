@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+
+{% block body %}
+<div class="page-intro" style="margin-top: 0px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <ol class="breadcrumb">
+                    <li><i class="fa fa-home pr-10"></i><a href="{% url 'core:index' %}">{% trans 'Início' %}</a></li>
+                    <li class="active"><i class="fa fa-user pr-10"></i><a href="{% url 'accounts:signup' %}">{% trans 'Cadastro' %}</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="main-container" style="margin-top: 0px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
+                <form role="form" action="" method="post" class="form-horizontal">
+                    {% csrf_token %}
+                    {% include "horizontal_form.html" %}
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-default">{% trans 'Enviar' %}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

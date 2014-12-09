@@ -1,0 +1,12 @@
+{% load i18n %}
+{% url 'accounts:check_email' user.pk token as check_email_url %}
+{% blocktrans %}
+<p>
+    Olá <strong>{{ user }}</strong>, você está recebendo este e-mail porque realizou o cadastro na plataforma {{ SITE_NAME }}. Para confirmar a sua conta, acesse o link:
+    <br />
+    <a href="http://{{ SITE_DOMAIN }}{{ check_email_url }}">http://{{ SITE_DOMAIN }}{{ check_email_url }}</a>
+</p>
+<p>
+    Caso não tenha realizado cadastro na plataforma, por favor ignore este e-mail.
+</p>
+{% endblocktrans %}

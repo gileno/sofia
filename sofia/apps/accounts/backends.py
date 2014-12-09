@@ -9,7 +9,11 @@ class ModelBackend(BaseModelBackend):
         try:
             user = User.objects.get(email=username)
         except User.DoesNotExist:
-            pass
-        else:
-            if user.check_password(password):
-                return user
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                user = None
+
+        if user and not user.check_password(password):
+            user = None
+        return user

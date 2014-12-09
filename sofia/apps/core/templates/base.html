@@ -47,7 +47,7 @@
         "boxed": boxed layout mode e.g. <body class="boxed">
         "pattern-1 ... pattern-9": background patterns for boxed layout mode e.g. <body class="boxed pattern-1">
 -->
-<body class="front">
+<body class="{% block body_css_class %}front{% endblock %}">
     <!-- scrollToTop -->
     <!-- ================ -->
     <div class="scrollToTop"><i class="icon-up-open-big"></i></div>
@@ -111,7 +111,7 @@
                                                     <i class="fa fa-lock form-control-feedback"></i>
                                                 </div>
                                                 <button type="submit" class="btn btn-group btn-dark btn-sm">{% trans 'Entrar' %}</button>
-                                                <a href="" class="btn btn-group btn-default btn-sm">{% trans 'Cadastrar' %}</a>
+                                                <a href="{% url 'accounts:signup' %}" class="btn btn-group btn-default btn-sm">{% trans 'Cadastrar' %}</a>
                                                 <ul>
                                                     <li><a href="#">{% trans 'Esqueceu sua senha?' %}</a></li>
                                                 </ul>

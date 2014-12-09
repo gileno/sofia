@@ -8,33 +8,35 @@ from .models import User, ResetPassword
 
 class SigninForm(forms.Form):
 
-    email = forms.EmailField(label=_("E-mail or Username"))
-    password = forms.CharField(label=_("Password"), widget=forms.PasswordInput)
+    email = forms.EmailField(label=_("E-mail ou Usuário"))
+    password = forms.CharField(label=_("Senha"), widget=forms.PasswordInput)
 
     error_messages = {
-        'invalid': _('Authentication failed'),
+        'invalid': _(
+            'Dados inválidos, preencha corretamente o e-mail ou usuário '
+            'e a senha'
+        ),
     }
 
-    _user = None
+    user = None
 
     def clean(self):
         if 'email' in self.cleaned_data and 'password' in self.cleaned_data:
             email = self.cleaned_data['email']
             password = self.cleaned_data['password']
-            self._user = authenticate(email=email, password=password)
-            if self._user is None:
+            self.user = authenticate(email=email, password=password)
+            if self.user is None:
                 raise forms.ValidationError(self.error_messages['invalid'])
         return self.cleaned_data
 
     def login(self, request):
-        login(request, self._user)
+        login(request, self.user)
         request.session.set_expiry(None)
-        return self._user
 
 
 class SignupForm(forms.ModelForm):
 
-    password = forms.CharField(label=_("Password"), widget=forms.PasswordInput)
+    password = forms.CharField(label=_("Senha"), widget=forms.PasswordInput)
 
     def save(self, commit=True):
         user = super(SignupForm, self).save(commit=False)
@@ -52,7 +54,7 @@ class SignupForm(forms.ModelForm):
 class UserAdminForm(forms.ModelForm):
 
     password = forms.CharField(
-        label=_("Password"), widget=forms.PasswordInput, required=False
+        label=_("Senha"), widget=forms.PasswordInput, required=False
     )
 
     def save(self, commit=True):

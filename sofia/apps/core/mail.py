@@ -8,6 +8,7 @@ def send_mail_template(
     subject, template_name, context, recipient_list,
     from_email=settings.DEFAULT_FROM_EMAIL, commit=True
 ):
+    subject = settings.DEFAULT_SUBJECT_PREFIX + subject
     context.update(settings.CONTEXT_EXTRA_MAIL)
     html_content = loader.render_to_string(template_name, context)
     text_content = strip_tags(html_content)

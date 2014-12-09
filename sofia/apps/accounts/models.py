@@ -11,11 +11,13 @@ from django.template.defaultfilters import slugify
 from django.contrib.auth.models import (
     AbstractBaseUser, UserManager, PermissionsMixin
 )
+from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import int_to_base36
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 
 from apps.core.models import BaseModel
+from apps.core.mail import send_mail_template
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -38,7 +40,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         _('E-mail verificado'), blank=True, default=False
     )
     is_staff = models.BooleanField(_('Equipe'), default=False)
-    is_active = models.BooleanField(_('Ativo'), default=True)
+    is_active = models.BooleanField(_('Ativo'), default=False)
     date_joined = models.DateTimeField(_('Data de Entrada'), auto_now_add=True)
     about = models.TextField(_('Sobre'), blank=True)
     location = models.CharField(_('Localização'), max_length=255, blank=True)
@@ -50,6 +52,35 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __unicode__(self):
         return self.name or self.username
+
+    def save(self, *args, **kwargs):
+        if not self.username:
+            username = slugify(self.name)[:28]
+            index = 1
+            while(User.objects.filter(username=username).exists()):
+                username = '{0}-{1}'.format(username, index)
+                index = index + 1
+            self.username = username
+        return super(User, self).save(*args, **kwargs)
+
+    def send_confirm_mail(self):
+        subject = 'Confirmação de E-mail'
+        template_name = 'accounts/emails/confirm_mail.html'
+        context = {
+            'user': self, 'token': default_token_generator.make_token(self)
+        }
+        recipient_list = [self.email]
+        send_mail_template(
+            subject, template_name, context, recipient_list,
+        )
+
+    def check_email(self, token):
+        if default_token_generator.check_token(self, token):
+            self.verified_email = True
+            self.is_active = True
+            self.save()
+            return True
+        return False
 
     def get_full_name(self):
         return self.name
@@ -67,13 +98,21 @@ class ResetPassword(BaseModel):
     user = models.ForeignKey(
         User, verbose_name=_('Usuário'), related_name='resets'
     )
-    key = models.CharField(_('Chave de confirmação'), unique=True, max_length=100)
+    key = models.CharField(
+        _('Chave de confirmação'), unique=True, max_length=100
+    )
     confirmed_on = models.DateTimeField(
         _('Confirmado em'), null=True, blank=True
     )
 
     def send_mail(self):
-        pass
+        subject = 'Criar Nova Senha'
+        template_name = 'accounts/emails/reset_password.html'
+        context = {'reset_password': self}
+        recipient_list = [self.user.email]
+        send_mail_template(
+            subject, template_name, context, recipient_list,
+        )
 
     def __unicode__(self):
         return 'Nova senha para {0}'.format(self.user)
@@ -91,14 +130,10 @@ class ResetPassword(BaseModel):
         verbose_name_plural = _('Nova Senha')
 
 
-def pre_save_user(sender, instance, **kwargs):
-    if not instance.username:
-        username = slugify(instance.name)[:28]
-        index = 1
-        while(User.objects.filter(username=username).exists()):
-            username = '{0}-{1}'.format(username, index)
-            index = index + 1
-        instance.username = username
-models.signals.pre_save.connect(
-    pre_save_user, sender=User, dispatch_uid='pre_save_user'
+def post_save_user(instance, created, **kwargs):
+    if created:
+        instance.send_confirm_mail()
+
+models.signals.post_save.connect(
+    post_save_user, sender=User, dispatch_uid='post_save_user'
 )
