@@ -122,8 +122,9 @@ class ResetPassword(BaseModel):
             chars = string.ascii_uppercase + string.digits
             salt = self.user.email
             random_str = ''.join([random.choice(chars) for x in range(5)])
-            hashing_str = random_str + salt
-            self.key = hashlib.sha224(hashing_str.encode('utf-8')).hexdigest()[:100]
+            hashing = random_str + salt
+            hashing_str = hashing.encode('utf-8')
+            self.key = hashlib.sha224(hashing_str).hexdigest()[:100]
         return super(ResetPassword, self).save(*args, **kwargs)
 
     class Meta:
