@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import ugettext_lazy as _
 
-from .models import User
+from .models import User, ResetPassword
 from .forms import UserAdminForm, AdminUserChangeForm, AdminUserCreationForm
 
 
@@ -28,4 +28,10 @@ class UserAdmin(BaseUserAdmin):
     search_fields = ('username', 'name', 'email')
 
 
+class ResetPasswordAdmin(admin.ModelAdmin):
+
+    list_display = ['user', 'key', 'confirmed_on']
+
+
 admin.site.register(User, UserAdmin)
+admin.site.register(ResetPassword, ResetPasswordAdmin)

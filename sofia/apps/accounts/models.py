@@ -50,7 +50,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name or self.username
 
     def save(self, *args, **kwargs):
@@ -107,14 +107,14 @@ class ResetPassword(BaseModel):
 
     def send_mail(self):
         subject = 'Criar Nova Senha'
-        template_name = 'accounts/emails/reset_password.html'
+        template_name = 'accounts/emails/reset_password_mail.html'
         context = {'reset_password': self}
         recipient_list = [self.user.email]
         send_mail_template(
             subject, template_name, context, recipient_list,
         )
 
-    def __unicode__(self):
+    def __str__(self):
         return 'Nova senha para {0}'.format(self.user)
 
     def save(self, *args, **kwargs):
@@ -122,7 +122,8 @@ class ResetPassword(BaseModel):
             chars = string.ascii_uppercase + string.digits
             salt = self.user.email
             random_str = ''.join([random.choice(chars) for x in range(5)])
-            self.key = hashlib.sha224(random_str + salt).hexdigest()[:100]
+            hashing_str = random_str + salt
+            self.key = hashlib.sha224(hashing_str.encode('utf-8')).hexdigest()[:100]
         return super(ResetPassword, self).save(*args, **kwargs)
 
     class Meta:

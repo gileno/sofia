@@ -113,7 +113,7 @@
                                                 <button type="submit" class="btn btn-group btn-dark btn-sm">{% trans 'Entrar' %}</button>
                                                 <a href="{% url 'accounts:signup' %}" class="btn btn-group btn-default btn-sm">{% trans 'Cadastrar' %}</a>
                                                 <ul>
-                                                    <li><a href="#">{% trans 'Esqueceu sua senha?' %}</a></li>
+                                                    <li><a href="{% url 'accounts:reset_password' %}">{% trans 'Esqueceu a senha?' %}</a></li>
                                                 </ul>
                                             </form>
                                             {% endif %}

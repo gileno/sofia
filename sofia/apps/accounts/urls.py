@@ -10,6 +10,8 @@ urlpatterns = patterns(
         r'^confirmar-email/(?P<pk>\d+)/(?P<token>.+)/$', 'check_email',
         name='check_email'
     ),
+    url(r'^esqueceu-a-senha/$', 'reset_password', name='reset_password'),
+    url(r'^nova-senha/(?P<key>.*)/$', 'set_password', name='set_password'),
 )
 
 urlpatterns += patterns(
