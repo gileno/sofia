@@ -1,12 +1,15 @@
 from django.shortcuts import get_object_or_404, redirect
 from django.utils import timezone
 from django.views import generic
-from django.contrib.auth import get_user_model, login, authenticate
-from django.contrib.auth.forms import SetPasswordForm
+from django.contrib.auth import (
+    get_user_model, login, authenticate, update_session_auth_hash
+)
+from django.contrib.auth.forms import SetPasswordForm, PasswordChangeForm
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
 from django.conf import settings
 
-from .forms import SignupForm, ResetPasswordForm
+from .forms import SignupForm, ResetPasswordForm, UpdateAccountForm
 from .models import ResetPassword
 
 
@@ -92,9 +95,44 @@ class SetPasswordView(generic.FormView):
         return redirect(settings.LOGIN_REDIRECT_URL)
 
 
-dashboard = DashboardView.as_view()
+class UpdateAccountView(generic.UpdateView):
+
+    model = User
+    template_name = 'accounts/update_account.html'
+    form_class = UpdateAccountForm
+    success_url = reverse_lazy('accounts:update_account')
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+
+class ChangePasswordView(generic.FormView):
+
+    template_name = 'accounts/change_password.html'
+
+    def get_form_kwargs(self):
+        kwargs = super(ChangePasswordView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def get_form_class(self):
+        if self.request.user.has_usable_password():
+            return PasswordChangeForm
+        else:
+            return SetPasswordForm
+
+    def form_valid(self, form):
+        form.save()
+        update_session_auth_hash(self.request, form.user)
+        extra_context = {'success': True}
+        return self.render_to_response(self.get_context_data(**extra_context))
+
+
+dashboard = login_required(DashboardView.as_view())
 signup = SignupView.as_view()
 confirm_email = ConfirmEmail.as_view()
 check_email = CheckEmail.as_view()
 reset_password = ResetPasswordView.as_view()
 set_password = SetPasswordView.as_view()
+update_account = login_required(UpdateAccountView.as_view())
+change_password = login_required(ChangePasswordView.as_view())

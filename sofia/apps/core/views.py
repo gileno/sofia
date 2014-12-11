@@ -1,7 +1,8 @@
-from django.shortcuts import render
-from django.views.generic import TemplateView
+from django.views import generic
 
 
-index = TemplateView.as_view(template_name='index.html')
-error404 = TemplateView.as_view(template_name='404.html')
-error500 = TemplateView.as_view(template_name='500.html')
+index = generic.RedirectView.as_view(
+    pattern_name='accounts:dashboard', permanent=False
+)
+error404 = generic.TemplateView.as_view(template_name='404.html')
+error500 = generic.TemplateView.as_view(template_name='500.html')

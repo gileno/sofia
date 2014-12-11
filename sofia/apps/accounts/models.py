@@ -1,20 +1,16 @@
 import re
-import os
 import hashlib
 import random
 import string
 
 from django.db import models
 from django.core import validators
-from django.conf import settings
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import (
     AbstractBaseUser, UserManager, PermissionsMixin
 )
 from django.contrib.auth.tokens import default_token_generator
-from django.utils.http import int_to_base36
 from django.utils.translation import ugettext_lazy as _
-from django.core.urlresolvers import reverse
 
 from apps.core.models import BaseModel
 from apps.core.mail import send_mail_template
@@ -23,7 +19,7 @@ from apps.core.mail import send_mail_template
 class User(AbstractBaseUser, PermissionsMixin):
 
     username = models.CharField(
-        _('Usuário'), max_length=30, unique=True, validators=[
+        _('Apelido / Usuário'), max_length=30, unique=True, validators=[
             validators.RegexValidator(
                 re.compile('^[\w.@+-]+$'),
                 _(
@@ -32,7 +28,8 @@ class User(AbstractBaseUser, PermissionsMixin):
                     'e os caracteres: @/./+/-/_ .'
                 ), 'invalid'
             )
-        ], blank=True,
+        ], help_text='Um nome curto que será usado para identificá-lo de '
+        'forma única na plataforma'
     )
     name = models.CharField(_('Nome'), max_length=100)
     email = models.EmailField(_('E-mail'), unique=True)
@@ -57,7 +54,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         if not self.username:
             username = slugify(self.name)[:28]
             index = 1
-            while(User.objects.filter(username=username).exists()):
+            while User.objects.filter(username=username).exclude(
+                pk=self.pk
+            ).exists():
                 username = '{0}-{1}'.format(username, index)
                 index = index + 1
             self.username = username

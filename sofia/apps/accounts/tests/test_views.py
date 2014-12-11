@@ -4,6 +4,7 @@ from django.test.client import Client
 from django.core.urlresolvers import reverse
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth import authenticate
+from django.contrib.auth.forms import SetPasswordForm
 
 from model_mommy import mommy
 
@@ -118,3 +119,52 @@ class SetPasswordTestCase(TestCase):
         data = {'new_password1': '123', 'new_password2': '1234'}
         response = self.client.post(set_password_url, data)
         self.assertTemplateUsed(response, 'accounts/set_password.html')
+
+
+class ChangePasswordTestCase(TestCase):
+
+    USER_PASSWORD = '123'
+
+    def setUp(self):
+        self.client = Client()
+        self.user_with_password = mommy.prepare(User, is_active=True)
+        self.user_with_password.set_password(self.USER_PASSWORD)
+        self.user_with_password.save()
+        self.user_without_password = mommy.make(User, is_active=True)
+        self.change_password_url = reverse('accounts:change_password')
+
+    def tearDown(self):
+        self.user_with_password.delete()
+        self.user_without_password.delete()
+
+    def test_user_with_password(self):
+        self.client.login(
+            username=self.user_with_password.username,
+            password=self.USER_PASSWORD
+        )
+        response = self.client.get(self.change_password_url)
+        self.assertTemplateUsed(response, 'accounts/change_password.html')
+        data = {
+            'new_password1': '1234', 'new_password2': '1234',
+            'old_password': '1234'
+        }
+        response = self.client.post(self.change_password_url, data)
+        form = response.context_data['form']
+        exp = len(form.errors) > 0
+        self.assertTrue(exp)
+        data['old_password'] = self.USER_PASSWORD
+        response = self.client.post(self.change_password_url, data)
+        exp = 'success' in response.context
+        self.assertTrue(exp)
+
+    def test_user_without_password(self):
+        self.user_without_password.set_password(self.USER_PASSWORD)  # login
+        self.user_without_password.save()
+        self.client.login(
+            username=self.user_without_password.username,
+            password=self.USER_PASSWORD
+        )
+        self.user_without_password.set_unusable_password()
+        response = self.client.get(self.change_password_url)
+        form = response.context_data['form']
+        self.assertTrue(isinstance(form, SetPasswordForm))

@@ -30,8 +30,8 @@
 						<nav>
 							<ul class="nav nav-pills nav-stacked">
                                 <li><a href="">{% trans 'Projetos' %}</a></li>
-								<li><a href="">{% trans 'Informações Básicas' %}</a></li>
-								<li><a href="">{% trans 'Alterar Senha' %}</a></li>
+								<li><a href="{% url 'accounts:update_account' %}">{% trans 'Informações Básicas' %}</a></li>
+								<li><a href="{% url 'accounts:change_password' %}">{% trans 'Alterar Senha' %}</a></li>
                                 <li><a href="">{% trans 'Notificações' %}</a></li>
 							</ul>
 						</nav>

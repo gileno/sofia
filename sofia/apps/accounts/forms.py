@@ -100,3 +100,10 @@ class ResetPasswordForm(forms.Form):
             return reset_password
         except User.DoesNotExist:
             pass
+
+
+class UpdateAccountForm(forms.ModelForm):
+
+    class Meta:
+        model = User
+        fields = ['name', 'username', 'about', 'location']

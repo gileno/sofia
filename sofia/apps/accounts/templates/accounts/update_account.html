@@ -1,0 +1,17 @@
+{% extends 'accounts/base.html' %}
+
+{% load i18n %}
+
+{% block title %}{% trans 'Atualizar Dados Básicos' %}{% endblock %}
+
+{% block accounts_body %}
+<form role="form" action="" method="post" class="form-horizontal">
+    {% csrf_token %}
+    {% include "horizontal_form.html" %}
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-default">{% trans 'Salvar' %}</button>
+        </div>
+    </div>
+</form>
+{% endblock %}

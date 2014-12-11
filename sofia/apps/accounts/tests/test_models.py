@@ -1,19 +1,17 @@
-from django.test import SimpleTestCase
-from django.test.client import RequestFactory, Client
-from django.core import mail
-from django.core.urlresolvers import reverse
-from django.conf import settings
+from django.test import TestCase
 
 from model_mommy import mommy
 
 from apps.accounts.models import User
 
 
-class UserTestCase(SimpleTestCase):
+class UserTestCase(TestCase):
 
     def setUp(self):
-        self.user1 = mommy.make(User, name='Fulano de Tal')
-        self.user2 = mommy.make(User, name='Fulano de Tal')
+        self.user1 = mommy.prepare(User, name='Fulano de Tal', username='')
+        self.user2 = mommy.prepare(User, name='Fulano de Tal', username='')
+        self.user1.save()
+        self.user2.save()
 
     def tearDown(self):
         self.user1.delete()
