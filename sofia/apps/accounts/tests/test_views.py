@@ -1,10 +1,9 @@
 from django.test import TestCase
 from django.core import mail
-from django.test.client import RequestFactory, Client
+from django.test.client import Client
 from django.core.urlresolvers import reverse
-from django.conf import settings
-from django.contrib.auth import authenticate
 from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth import authenticate
 
 from model_mommy import mommy
 
@@ -77,9 +76,7 @@ class ResetPasswordTestCase(TestCase):
     def test_reset_password_existing_email(self):
         response = self.client.get(self.reset_password_url)
         self.assertEqual(response.status_code, 200)
-        data = {
-            'email': self.user.email
-        }
+        data = {'email': self.user.email}
         response = self.client.post(self.reset_password_url, data)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(mail.outbox), 2)  # confirm email
@@ -101,3 +98,23 @@ class SetPasswordTestCase(TestCase):
     def tearDown(self):
         self.reset_password.delete()
         self.user.delete()
+
+    def test_set_password_ok(self):
+        set_password_url = reverse(
+            'accounts:set_password', args=[self.reset_password.key]
+        )
+        response = self.client.get(set_password_url)
+        self.assertTemplateUsed(response, 'accounts/set_password.html')
+        data = {'new_password1': '123', 'new_password2': '123'}
+        response = self.client.post(set_password_url, data)
+        self.assertEqual(response.status_code, 302)
+        user = authenticate(username=self.user.username, password='123')
+        self.assertEqual(self.user, user)
+
+    def test_set_password_error(self):
+        set_password_url = reverse(
+            'accounts:set_password', args=[self.reset_password.key]
+        )
+        data = {'new_password1': '123', 'new_password2': '1234'}
+        response = self.client.post(set_password_url, data)
+        self.assertTemplateUsed(response, 'accounts/set_password.html')
