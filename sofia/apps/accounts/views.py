@@ -4,14 +4,18 @@ from django.views import generic
 from django.contrib.auth import get_user_model, login, authenticate
 from django.contrib.auth.forms import SetPasswordForm
 from django.core.urlresolvers import reverse_lazy
-from django.utils.http import is_safe_url
 from django.conf import settings
 
-from .forms import SignupForm, SigninForm, ResetPasswordForm
+from .forms import SignupForm, ResetPasswordForm
 from .models import ResetPassword
 
 
 User = get_user_model()
+
+
+class DashboardView(generic.TemplateView):
+
+    template_name = 'accounts/dashboard.html'
 
 
 class SignupView(generic.CreateView):
@@ -88,6 +92,7 @@ class SetPasswordView(generic.FormView):
         return redirect(settings.LOGIN_REDIRECT_URL)
 
 
+dashboard = DashboardView.as_view()
 signup = SignupView.as_view()
 confirm_email = ConfirmEmail.as_view()
 check_email = CheckEmail.as_view()

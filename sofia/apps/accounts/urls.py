@@ -1,9 +1,9 @@
-from django.conf.urls import patterns, include, url
-from django.contrib.auth.views import logout
+from django.conf.urls import patterns, url
 
 
 urlpatterns = patterns(
     'apps.accounts.views',
+    url(r'^$', 'dashboard', name='dashboard'),
     url(r'^cadastro/$', 'signup', name='signup'),
     url(r'^confirmar-email/$', 'confirm_email', name='confirm_email'),
     url(

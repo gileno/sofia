@@ -6,8 +6,8 @@
 <!--<![endif]-->
 <head>
     <meta charset="utf-8">
-    <title>{% block title %}{% trans 'SOFIA - Plataforma Educacional' %}{% endblock %}</title>
-    <meta name="description" content="{% block description %}SOFIA - Plataforma Educacional{% endblock %}">
+    <title>{% block title %}{{ SITE_NAME }}{% endblock %}</title>
+    <meta name="description" content="{% block description %}{{ SITE_NAME }}{% endblock %}">
     <meta name="author" content="gilenofilho.com.br">
 
     <!-- Mobile Meta -->
@@ -91,13 +91,9 @@
                                         {% trans 'Entrar' %}
                                     {% endif %}
                                     </button>
+                                    {% if not user.is_authenticated %}
                                     <ul class="dropdown-menu dropdown-menu-right dropdown-animation">
                                         <li>
-                                            {% if user.is_authenticated %}
-                                            <div class="panel-body text-right">
-                                                <a href="{% url 'accounts:logout' %}" class="btn btn-group btn-danger btn-sm">{% trans 'Sair' %}</a>
-											</div>
-                                            {% else %}
                                             <form class="login-form" action="{% url 'accounts:login' %}?next={{ request.get_full_path }}" method="post">
                                                 {% csrf_token %}
                                                 <div class="form-group has-feedback">
@@ -116,8 +112,44 @@
                                                     <li><a href="{% url 'accounts:reset_password' %}">{% trans 'Esqueceu a senha?' %}</a></li>
                                                 </ul>
                                             </form>
-                                            {% endif %}
                                         </li>
+                                        {% else %}
+                                        <ul class="dropdown-menu dropdown-menu-right dropdown-animation cart">
+                                            <li>
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>
+                                                                Meus Projetos
+                                                            </th>
+                                                            <th>
+
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <a href="#">Construindo uma plataforma de Ensino</a>
+                                                            </td>
+                                                            <td>
+                                                                <a href="#" class="btn btn-default btn-sm">Acessar</a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">
+                                                                {% trans 'Você não está participando de projetos' %}
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="panel-body text-right">
+    												<a href="{% url 'accounts:dashboard' %}" class="btn btn-group btn-default btn-sm">{% trans 'Minha Conta' %}</a>
+    												<a href="{% url 'accounts:logout' %}" class="btn btn-group btn-dark btn-sm">{% trans 'Sair' %}</a>
+												</div>
+                                            </li>
+                                        </ul>
+                                        {% endif %}
                                     </ul>
                                 </div>
                             </div>
@@ -188,13 +220,13 @@
                                         <div class="collapse navbar-collapse" id="navbar-collapse-1">
                                             <ul class="nav navbar-nav navbar-right">
                                                 <li>
-                                                    <a href="{% url 'core:index' %}" class="dropdown-toggle">Início</a>
+                                                    <a href="{% url 'core:index' %}" class="dropdown-toggle">{% trans 'Início' %}</a>
                                                 </li>
                                                 <li>
-                                                    <a href="#">Biblioteca</a>
+                                                    <a href="#">{% trans 'Projetos' %}</a>
                                                 </li>
                                                 <li>
-                                                    <a href="#">Fórum</a>
+                                                    <a href="#">{% trans 'Fórum' %}</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -269,7 +301,7 @@
                                 <!-- Toggle get grouped for better mobile display -->
                                 <div class="navbar-header">
                                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-2">
-                                        <span class="sr-only">Navegação</span>
+                                        <span class="sr-only">{% trans 'Navegação' %}</span>
                                         <span class="icon-bar"></span>
                                         <span class="icon-bar"></span>
                                         <span class="icon-bar"></span>
@@ -277,11 +309,8 @@
                                 </div>
                                 <div class="collapse navbar-collapse" id="navbar-collapse-2">
                                     <ul class="nav navbar-nav">
-                                        <li><a href="index.html">Home</a></li>
-                                        <li><a href="page-about.html">About</a></li>
-                                        <li><a href="blog-right-sidebar.html">Blog</a></li>
-                                        <li><a href="portfolio-3col.html">Portfolio</a></li>
-                                        <li><a href="page-contact.html">Contact</a></li>
+                                        <li><a href="{% url 'core:index' %}">{% trans 'Início' %}</a></li>
+                                        <li><a href="{% url 'accounts:dashboard' %}">Conta</a></li>
                                     </ul>
                                 </div>
                             </nav>

@@ -101,19 +101,22 @@ from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
 
 TEMPLATE_CONTEXT_PROCESSORS = TCP + (
     'django.core.context_processors.request',
+    'apps.core.context_processors.settings',
 )
+
+# Site settings
+SITE_NAME = 'Sofia - Plataforma Educacional'
+SITE_DOMAIN = 'sofiaplataforma.com.br'
 
 # Mail Settings
 DEFAULT_FROM_EMAIL = 'sistema@sofiaplataforma.com.br'
 CONTEXT_EXTRA_MAIL = {
-    'SITE_NAME': 'Sofia - Plataforma Educacional',
-    'SITE_DOMAIN': 'sofiaplataforma.com.br'
+    'SITE_NAME': SITE_NAME,
+    'SITE_DOMAIN': SITE_DOMAIN
 }
 DEFAULT_SUBJECT_PREFIX = '[SOFIA] '
 
 # Auth Settings
-from django.conf.global_settings import AUTHENTICATION_BACKENDS as AB
-
 AUTHENTICATION_BACKENDS = ('apps.accounts.backends.ModelBackend',)
 
 AUTH_USER_MODEL = 'accounts.User'
