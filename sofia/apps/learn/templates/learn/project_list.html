@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% load i18n thumbnail static %}
+
+{% block title %}
+{% trans 'Projetos' %}
+{% endblock %}
+
+{% block body %}
+<div class="page-intro" style="margin-top: 0px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <ol class="breadcrumb">
+                    <li><i class="fa fa-home pr-10"></i><a href="{% url 'core:index' %}">{% trans 'Início' %}</a></li>
+                    <li class="active">{% trans 'Projetos' %}</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="main-container" style="margin-top: 0px;">
+    <div class="container">
+        <div class="row">
+            <div class="main col-md-12">
+                <h1 class="page-title">{% trans 'Projetos' %}</h1>
+                <div class="space-bottom"></div>
+                <div class="row grid-space-20">
+                    {% for project in object_list %}
+                    <div class="col-md-4">
+						<div class="image-box mb-20">
+							<div class="overlay-container">
+                                {% if project.photo %}
+                                <img src="{{ project.photo|thumbnail_url:'project_photo' }}" alt="" />
+                                {% else %}
+                                <img src="{% static 'images/portfolio-1.jpg' %}" alt="" />
+                                {% endif %}
+								<a href="" class="overlay small">
+									<i class="fa fa-link"></i>
+									<span>{{ project.description|truncatewords:"30" }}</span>
+								</a>
+							</div>
+							<a href="" class="btn btn-light-gray btn-lg btn-block">{{ project }}</a>
+						</div>
+					</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

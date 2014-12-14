@@ -16,6 +16,10 @@
                 {% else %}
                 <img src="{% static 'images/portfolio-1.jpg' %}" alt="" />
                 {% endif %}
+                <a href="" class="overlay small">
+					<i class="fa fa-link"></i>
+					<span>{{ project.description|truncatewords:"30" }}</span>
+				</a>
             </div>
             <a href="#" class="btn btn-light-gray btn-lg btn-block">{{ project }}</a>
         </div>

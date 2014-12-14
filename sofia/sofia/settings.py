@@ -110,7 +110,7 @@ TEMPLATE_CONTEXT_PROCESSORS = TCP + (
 )
 
 # Site settings
-SITE_NAME = 'Sofia - Plataforma Educacional'
+SITE_NAME = 'Sofia'
 SITE_DOMAIN = 'sofiaplataforma.com.br'
 
 # Mail Settings
