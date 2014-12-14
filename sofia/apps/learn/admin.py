@@ -10,6 +10,7 @@ class ProjectAdmin(admin.ModelAdmin):
     list_display = ['name', 'leader', 'level', 'created', 'modified']
     search_fields = ['name', 'leader__name', 'description']
     list_filter = ['level']
+    prepopulated_fields = {'slug': ['name']}
 
 
 class EnrollmentAdmin(admin.ModelAdmin):
@@ -23,6 +24,13 @@ class ModuleAdmin(SortableModelAdmin):
     list_display = ['name', 'project', 'order', 'created', 'modified']
     search_fields = ['name', 'project__name', 'description']
     sortable = 'order'
+    prepopulated_fields = {'slug': ['name']}
+
+
+class MaterialInline(admin.StackedInline):
+
+    model = Material
+    extra = 1
 
 
 class LessonAdmin(SortableModelAdmin):
@@ -30,6 +38,10 @@ class LessonAdmin(SortableModelAdmin):
     list_display = ['name', 'module', 'order', 'created', 'modified']
     search_fields = ['name', 'module__name', 'description']
     sortable = 'order'
+    prepopulated_fields = {'slug': ['name']}
+    inlines = [
+        MaterialInline,
+    ]
 
 
 class MaterialAdmin(SortableModelAdmin):

@@ -1,5 +1,29 @@
 {% extends 'accounts/base.html' %}
 
-{% load i18n %}
+{% load i18n static project_tags thumbnail %}
 
 {% block title %}{% trans 'Minha Conta' %}{% endblock %}
+
+{% block accounts_body %}
+{% my_projects user as projects %}
+<div class="row">
+    {% for project in projects %}
+    <div class="col-sm-6 col-xs-12">
+        <div class="image-box mb-20">
+            <div class="overlay-container">
+                {% if project.photo %}
+                <img src="{{ project.photo|thumbnail_url:'project_photo' }}" alt="" />
+                {% else %}
+                <img src="{% static 'images/portfolio-1.jpg' %}" alt="" />
+                {% endif %}
+            </div>
+            <a href="#" class="btn btn-light-gray btn-lg btn-block">{{ project }}</a>
+        </div>
+    </div>
+    {% empty %}
+    <div class="alert alert-info">
+        {% trans 'Você não está participando de projetos' %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -30,6 +30,10 @@ class Project(BaseModel):
         _('Nível'), choices=PROJECT_LEVEL_CHOICES
     )
     description = models.TextField(_('Descrição'), blank=True)
+    photo = models.ImageField(
+        _('Imagem'), upload_to='projects/photos', blank=True, null=True,
+        help_text=_('360x220 é a proporção ideal para a imagem')
+    )
     # dates
     start_date = models.DateField(_('Início'), null=True, blank=True)
     end_date = models.DateField(_('Término'), null=True, blank=True)
@@ -59,6 +63,7 @@ class Enrollment(BaseModel):
     project = models.ForeignKey(
         Project, verbose_name=_('Projeto'), related_name='enrollments'
     )
+    blocked = models.BooleanField(_('Bloqueado'), default=False, blank=True)
     is_staff = models.BooleanField(
         _('É da equipe?'), default=False, blank=True
     )
@@ -136,7 +141,10 @@ class Material(BaseModel):
         _('Arquivo'), upload_to='lessons/materials', blank=True, null=True,
         help_text=_('Utilizado para os tipos "Vídeo" e "Documento"')
     )
-    order = models.PositiveSmallIntegerField(_('Ordem'), default=0, blank=True)
+    order = models.PositiveSmallIntegerField(
+        _('Ordem'), default=0, blank=True,
+        help_text=_('Ordem crescente da listagem dos materiais')
+    )
 
     def __str__(self):
         return self.name

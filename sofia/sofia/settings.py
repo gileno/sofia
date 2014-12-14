@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'gunicorn',
     'widget_tweaks',
     'taggit',
+    'easy_thumbnails',
     # apps
     'apps.core',
     'apps.accounts',
@@ -131,6 +132,13 @@ LOGIN_REDIRECT_URL = 'core:index'
 # Suit admin
 SUIT_CONFIG = {
     'ADMIN_NAME': SITE_NAME,
+}
+
+# Thumbnails
+THUMBNAIL_ALIASES = {
+    '': {
+        'project_photo': {'size': (360, 220), 'crop': True},
+    },
 }
 
 try:
