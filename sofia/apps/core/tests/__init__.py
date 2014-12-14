@@ -12,5 +12,6 @@ class ContextProcessorsTestCase(TestCase):
         url_index = reverse('core:index')
         response = self.client.get(url_index)
         exp = 'SITE_NAME' in response.context and \
-            'SITE_DOMAIN' in response.context
+            'SITE_DOMAIN' in response.context and \
+            'DEFAULT_CONTACT_EMAIL' in response.context
         self.assertTrue(exp)

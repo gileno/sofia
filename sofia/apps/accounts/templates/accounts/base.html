@@ -10,7 +10,7 @@
 				<ol class="breadcrumb">
 					<li><i class="fa fa-home pr-10"></i><a href="{% url 'core:index' %}">{% trans 'Início' %}</a></li>
                     {% block breadcrumb %}
-					<li class="active">{% trans 'Configurações da Conta' %}</li>
+					<li class="active">{% trans 'Minha Conta' %}</li>
                     {% endblock %}
 				</ol>
 			</div>
@@ -29,10 +29,10 @@
 						<div class="separator"></div>
 						<nav>
 							<ul class="nav nav-pills nav-stacked">
-                                <li><a href="">{% trans 'Projetos' %}</a></li>
+                                <li><a href="{% url 'accounts:dashboard' %}">{% trans 'Minha conta' %}</a></li>
 								<li><a href="{% url 'accounts:update_account' %}">{% trans 'Informações Básicas' %}</a></li>
 								<li><a href="{% url 'accounts:change_password' %}">{% trans 'Alterar Senha' %}</a></li>
-                                <li><a href="">{% trans 'Notificações' %}</a></li>
+                                <li><a href="{% url 'accounts:notifications' %}">{% trans 'Notificações' %}</a></li>
 							</ul>
 						</nav>
 					</div>

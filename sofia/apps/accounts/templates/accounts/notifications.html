@@ -1,0 +1,10 @@
+{% extends 'accounts/base.html' %}
+
+{% load i18n %}
+
+{% block title %}{% trans 'Notificações' %}{% endblock %}
+
+{% block breadcrumb %}
+<li><a href="{% url 'accounts:dashboard' %}">{% trans 'Minha Conta' %}</a></li>
+<li class="active">{% trans 'Notificações' %}</li>
+{% endblock %}

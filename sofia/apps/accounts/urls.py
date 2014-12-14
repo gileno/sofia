@@ -17,6 +17,8 @@ urlpatterns = patterns(
     url(r'^esqueceu-a-senha/$', 'reset_password', name='reset_password'),
     url(r'^nova-senha/(?P<key>.*)/$', 'set_password', name='set_password'),
     url(r'^alterar-a-senha/$', 'change_password', name='change_password'),
+    # notifications
+    url(r'^notificacoes/$', 'notifications', name='notifications'),
 )
 
 urlpatterns += patterns(

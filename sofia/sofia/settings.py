@@ -29,6 +29,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    'suit',
+    # contrib
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,9 +40,11 @@ INSTALLED_APPS = (
     # libs
     'gunicorn',
     'widget_tweaks',
+    'taggit',
     # apps
     'apps.core',
     'apps.accounts',
+    'apps.learn',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -115,14 +119,19 @@ CONTEXT_EXTRA_MAIL = {
     'SITE_DOMAIN': SITE_DOMAIN
 }
 DEFAULT_SUBJECT_PREFIX = '[SOFIA] '
+DEFAULT_CONTACT_EMAIL = 'contato@sofiaplataforma.com.br'
 
 # Auth Settings
 AUTHENTICATION_BACKENDS = ('apps.accounts.backends.ModelBackend',)
-
 AUTH_USER_MODEL = 'accounts.User'
 LOGIN_URL = 'accounts:login'
 LOGOUT_URL = 'accounts:logout'
 LOGIN_REDIRECT_URL = 'core:index'
+
+# Suit admin
+SUIT_CONFIG = {
+    'ADMIN_NAME': SITE_NAME,
+}
 
 try:
     from sofia.local_settings import *

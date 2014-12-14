@@ -128,6 +128,11 @@ class ChangePasswordView(generic.FormView):
         return self.render_to_response(self.get_context_data(**extra_context))
 
 
+class NotificationsView(generic.TemplateView):
+
+    template_name = 'accounts/notifications.html'
+
+
 dashboard = login_required(DashboardView.as_view())
 signup = SignupView.as_view()
 confirm_email = ConfirmEmail.as_view()
@@ -136,3 +141,4 @@ reset_password = ResetPasswordView.as_view()
 set_password = SetPasswordView.as_view()
 update_account = login_required(UpdateAccountView.as_view())
 change_password = login_required(ChangePasswordView.as_view())
+notifications = login_required(NotificationsView.as_view())

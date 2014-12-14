@@ -4,6 +4,11 @@
 
 {% block title %}{% trans 'Atualizar Dados Básicos' %}{% endblock %}
 
+{% block breadcrumb %}
+<li><a href="{% url 'accounts:dashboard' %}">{% trans 'Minha Conta' %}</a></li>
+<li class="active">{% trans 'Atualizar dados básicos' %}</li>
+{% endblock %}
+
 {% block accounts_body %}
 <form role="form" action="" method="post" class="form-horizontal">
     {% csrf_token %}
