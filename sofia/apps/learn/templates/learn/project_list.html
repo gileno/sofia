@@ -52,20 +52,31 @@
             <div class="main col-md-8 col-md-offset-1">
                 {% for project in object_list %}
                 <div class="col-sm-6 col-xs-12">
-                    <div class="image-box mb-20">
-                        <div class="overlay-container">
-                            {% if project.photo %}
-                            <img src="{{ project.photo|thumbnail_url:'project_photo' }}" alt="" />
+                    <div class="listing-item">
+						<div class="overlay-container">
+							{% if project.photo %}
+                            <img src="{{ project.photo|thumbnail_url:'project_photo' }}" alt="{{ project }}" />
                             {% else %}
-                            <img src="{% static 'images/portfolio-1.jpg' %}" alt="" />
+                            <img src="{% static 'images/portfolio-1.jpg' %}" alt="{{ project }}" />
                             {% endif %}
-                            <a href="{{ project.get_absolute_url }}" class="overlay small">
-                                <i class="fa fa-link"></i>
-                                <span>{{ project.description|truncatewords:"30" }}</span>
-                            </a>
-                        </div>
-                        <a href="{{ project.get_absolute_url }}" class="btn btn-light-gray btn-lg btn-block">{{ project }}</a>
-                    </div>
+							<a href="{{ project.get_absolute_url }}" class="overlay small">
+								<i class="fa fa-plus"></i>
+								<span>{% trans 'Mais detalhes' %}</span>
+							</a>
+						</div>
+						<div class="listing-item-body clearfix">
+							<h3 class="title"><a href="{{ project.get_absolute_url }}">{{ project }}</a></h3>
+							<p>
+							    {{ project.description|truncatewords:"30" }}
+							</p>
+                            <div class="elements-list pull-right">
+                                <i class="fa fa-tags"></i>
+                                {% for tag in project.tags.all %}
+								<a href="{% url 'learn:project_list_tag' tag.slug %}" class="wishlist">{{ tag }}</a>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
                 </div>
                 {% empty %}
                 <div class="alert alert-info">

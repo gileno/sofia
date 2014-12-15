@@ -17,17 +17,24 @@ class ProjectListView(generic.ListView):
                 self._area = get_object_or_404(Area, slug=area)
         return self._area
 
+    def get_tag(self):
+        return self.kwargs.get('tag', None)
+
     def get_queryset(self):
         area = self.get_area()
         if area:
             queryset = area.projects.all()
         else:
             queryset = Project.objects.all()
+        tag = self.get_tag()
+        if tag:
+            queryset = queryset.filter(tags__slug=tag)
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super(ProjectListView, self).get_context_data(**kwargs)
         context['current_area'] = self.get_area()
+        context['tag'] = self.get_tag()
         return context
 
 

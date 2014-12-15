@@ -8,6 +8,10 @@ urlpatterns = patterns(
         name='project_list_area'
     ),
     url(
+        r'^projetos/tags/(?P<tag>[\w_-]+)/$', 'project_list',
+        name='project_list_tag'
+    ),
+    url(
         r'^(?P<slug>[\w_-]+)/$', 'project_detail', name='project_detail'
     ),
 )
