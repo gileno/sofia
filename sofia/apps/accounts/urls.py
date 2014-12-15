@@ -4,7 +4,7 @@ from django.conf.urls import patterns, url
 urlpatterns = patterns(
     'apps.accounts.views',
     # dasboard
-    url(r'^$', 'dashboard', name='dashboard'),
+    url(r'^inicio/$', 'dashboard', name='dashboard'),
     url(r'^dados-basicos/$', 'update_account', name='update_account'),
     # register
     url(r'^cadastro/$', 'signup', name='signup'),

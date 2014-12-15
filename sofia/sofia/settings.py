@@ -141,6 +141,14 @@ THUMBNAIL_ALIASES = {
     },
 }
 
+# Messages
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+    messages.INFO: 'info',
+    messages.ERROR: 'danger',
+    messages.SUCCESS: 'success',
+}
+
 try:
     from sofia.local_settings import *
 except ImportError:

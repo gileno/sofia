@@ -1,10 +1,29 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
+from django.core.urlresolvers import reverse
 
 from taggit.managers import TaggableManager
 
 from apps.core.models import BaseModel
+
+
+class Area(BaseModel):
+
+    name = models.CharField(_('Nome'), max_length=100)
+    slug = models.SlugField(_('Identificador'), max_length=100)
+    tags = TaggableManager(blank=True)
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('learn:project_list_area', args=[self.slug])
+
+    class Meta:
+        verbose_name = _('Área de Estudo')
+        verbose_name_plural = _('Áreas de Estudo')
+        ordering = ['name']
 
 
 class Project(BaseModel):
@@ -21,6 +40,10 @@ class Project(BaseModel):
     # basic
     name = models.CharField(_('Nome'), max_length=100)
     slug = models.SlugField(_('Identificador'), max_length=100)
+    area = models.ForeignKey(
+        Area, verbose_name=_('Área'), related_name='projects', null=True,
+        blank=True, on_delete=models.SET_NULL
+    )
     leader = models.ForeignKey(
         settings.AUTH_USER_MODEL, verbose_name=_('Líder'),
         on_delete=models.SET_NULL, null=True, blank=True,
@@ -29,10 +52,15 @@ class Project(BaseModel):
     level = models.PositiveSmallIntegerField(
         _('Nível'), choices=PROJECT_LEVEL_CHOICES
     )
+    # details
     description = models.TextField(_('Descrição'), blank=True)
     photo = models.ImageField(
         _('Imagem'), upload_to='projects/photos', blank=True, null=True,
         help_text=_('360x220 é a proporção ideal para a imagem')
+    )
+    embedded_presentation = models.TextField(
+        _('Apresentação Embarcada (youtube/vimeo)'), blank=True, default='',
+        help_text=_('html embarcado de uma apresentação, ex: vídeo do youtube')
     )
     # dates
     start_date = models.DateField(_('Início'), null=True, blank=True)
@@ -43,11 +71,17 @@ class Project(BaseModel):
             'Não tem início ou fim, pode ser acessado a qualquer momento'
         )
     )
+    open_enrollment = models.BooleanField(
+        _('Inscrições Abertas'), blank=True, default=False
+    )
 
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('learn:project_detail', args=[self.slug])
 
     class Meta:
         verbose_name = 'Projeto'

@@ -2,7 +2,14 @@ from django.contrib import admin
 
 from suit.admin import SortableModelAdmin
 
-from .models import Project, Enrollment, Module, Lesson, Material
+from .models import Area, Project, Enrollment, Module, Lesson, Material
+
+
+class AreaAdmin(admin.ModelAdmin):
+
+    list_display = ['name', 'slug', 'created', 'modified']
+    search_fields = ['name']
+    prepopulated_fields = {'slug': ['name']}
 
 
 class ProjectAdmin(admin.ModelAdmin):
@@ -53,6 +60,7 @@ class MaterialAdmin(SortableModelAdmin):
     sortable = 'order'
 
 
+admin.site.register(Area, AreaAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Enrollment, EnrollmentAdmin)
 admin.site.register(Module, ModuleAdmin)

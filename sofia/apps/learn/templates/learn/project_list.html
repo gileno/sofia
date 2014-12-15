@@ -1,9 +1,12 @@
 {% extends "base.html" %}
 
-{% load i18n thumbnail static %}
+{% load i18n thumbnail static project_tags %}
 
 {% block title %}
 {% trans 'Projetos' %}
+{% if current_area %}
+| {{ current_area }}
+{% endif %}
 {% endblock %}
 
 {% block body %}
@@ -13,7 +16,12 @@
             <div class="col-md-12">
                 <ol class="breadcrumb">
                     <li><i class="fa fa-home pr-10"></i><a href="{% url 'core:index' %}">{% trans 'Início' %}</a></li>
+                    {% if current_area %}
+                    <li><a href="{% url 'learn:project_list' %}">{% trans 'Projetos' %}</a></li>
+                    <li class="active">{{ current_area }}</li>
+                    {% else %}
                     <li class="active">{% trans 'Projetos' %}</li>
+                    {% endif %}
                 </ol>
             </div>
         </div>
@@ -22,29 +30,48 @@
 <section class="main-container" style="margin-top: 0px;">
     <div class="container">
         <div class="row">
-            <div class="main col-md-12">
-                <h1 class="page-title">{% trans 'Projetos' %}</h1>
-                <div class="space-bottom"></div>
-                <div class="row grid-space-20">
-                    {% for project in object_list %}
-                    <div class="col-md-4">
-						<div class="image-box mb-20">
-							<div class="overlay-container">
-                                {% if project.photo %}
-                                <img src="{{ project.photo|thumbnail_url:'project_photo' }}" alt="" />
-                                {% else %}
-                                <img src="{% static 'images/portfolio-1.jpg' %}" alt="" />
-                                {% endif %}
-								<a href="" class="overlay small">
-									<i class="fa fa-link"></i>
-									<span>{{ project.description|truncatewords:"30" }}</span>
-								</a>
-							</div>
-							<a href="" class="btn btn-light-gray btn-lg btn-block">{{ project }}</a>
-						</div>
-					</div>
-                    {% endfor %}
+            <!-- sidebar start -->
+            <aside class="col-md-3">
+                <div class="sidebar">
+                    <div class="block clearfix">
+                        <h3 class="title">{% trans 'Áreas de Estudo' %}</h3>
+                        <div class="separator"></div>
+                        <nav>
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><a href="{% url 'learn:project_list' %}">{% trans 'Todas as áreas' %}</a></li>
+                                {% get_areas as areas %}
+                                {% for area in areas %}
+                                <li{% if area == current_area %} class="active"{% endif %}><a href="{{ area.get_absolute_url }}">{{ area }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
+            </aside>
+            <!-- sidebar end -->
+            <div class="main col-md-8 col-md-offset-1">
+                {% for project in object_list %}
+                <div class="col-sm-6 col-xs-12">
+                    <div class="image-box mb-20">
+                        <div class="overlay-container">
+                            {% if project.photo %}
+                            <img src="{{ project.photo|thumbnail_url:'project_photo' }}" alt="" />
+                            {% else %}
+                            <img src="{% static 'images/portfolio-1.jpg' %}" alt="" />
+                            {% endif %}
+                            <a href="{{ project.get_absolute_url }}" class="overlay small">
+                                <i class="fa fa-link"></i>
+                                <span>{{ project.description|truncatewords:"30" }}</span>
+                            </a>
+                        </div>
+                        <a href="{{ project.get_absolute_url }}" class="btn btn-light-gray btn-lg btn-block">{{ project }}</a>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="alert alert-info">
+                    {% trans 'Nenhum projeto encontrado' %}
+                </div>
+                {% endfor %}
             </div>
         </div>
     </div>

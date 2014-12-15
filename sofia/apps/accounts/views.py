@@ -1,11 +1,13 @@
 from django.shortcuts import get_object_or_404, redirect
 from django.utils import timezone
+from django.utils.translation import ugettext_lazy as _
 from django.views import generic
 from django.contrib.auth import (
     get_user_model, login, authenticate, update_session_auth_hash
 )
 from django.contrib.auth.forms import SetPasswordForm, PasswordChangeForm
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
 from django.conf import settings
 
@@ -92,6 +94,7 @@ class SetPasswordView(generic.FormView):
             password=form.cleaned_data['new_password1']
         )
         login(self.request, user)
+        messages.success(self.request, _('Senha criada com sucesso'))
         return redirect(settings.LOGIN_REDIRECT_URL)
 
 
@@ -104,6 +107,10 @@ class UpdateAccountView(generic.UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user
+
+    def get_success_url(self):
+        messages.success(self.request, _('Dados atualizados com sucesso'))
+        return super(UpdateAccountView, self).get_success_url()
 
 
 class ChangePasswordView(generic.FormView):

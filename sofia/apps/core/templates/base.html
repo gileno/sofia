@@ -102,18 +102,15 @@
             </div>
         </div>
         <!-- header-top end -->
-
         <!-- header start (remove fixed class from header in order to disable fixed navigation mode) -->
         <!-- ================ -->
         <header class="header fixed clearfix">
             <div class="container">
                 <div class="row">
                     <div class="col-md-3">
-
                         <!-- header-left start -->
                         <!-- ================ -->
                         <div class="header-left clearfix">
-
                             <!-- logo -->
                             <div class="logo">
                                 <h1>
@@ -122,13 +119,10 @@
                                     </a>
                                 </h1>
                             </div>
-
                         </div>
                         <!-- header-left end -->
-
                     </div>
                     <div class="col-md-9">
-
                         <!-- header-right start -->
                         <!-- ================ -->
                         <div class="header-right clearfix">
@@ -170,23 +164,31 @@
                                     </div>
                                 </nav>
                                 <!-- navbar end -->
-
                             </div>
                             <!-- main-navigation end -->
-
                         </div>
                         <!-- header-right end -->
-
                     </div>
                 </div>
             </div>
         </header>
         <!-- header end -->
+        {% if messages %}
+        <div class="container">
+            <div class="row">
+                {% for message in messages %}
+                <div class="col-md-12 alert alert-{{ message.tags }} fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">{% trans 'Fechar' %}</span></button>
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
         {% block body %}{% endblock %}
         <!-- footer start -->
         <!-- ================ -->
         <footer id="footer">
-
             <!-- .footer start -->
             <!-- ================ -->
             <div class="footer">
@@ -206,7 +208,7 @@
                                     <div class="col-sm-6">
                                         <ul class="list-icons">
                                             {% if DEFAULT_CONTACT_EMAIL %}
-                                            <li><i class="fa fa-envelope-o pr-10"></i> {{ DEFAULT_CONTACT_EMAIL }}</li>
+                                            <li><i class="fa fa-envelope-o pr-10"></i> <a href="mailto:{{ DEFAULT_CONTACT_EMAIL }}"></a>{{ DEFAULT_CONTACT_EMAIL }}</li>
                                             {% endif %}
                                         </ul>
                                     </div>
@@ -252,30 +254,25 @@
                 </div>
             </div>
             <!-- .subfooter end -->
-
         </footer>
         <!-- footer end -->
-
     </div>
     <!-- page-wrapper end -->
-
     <!-- JavaScript files placed at the end of the document so the pages load faster
     ================================================== -->
     <!-- Jquery and Bootstap core js files -->
     <script type="text/javascript" src="{% static 'plugins/jquery.min.js'%}"></script>
     <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-
     <!-- Modernizr javascript -->
     <script type="text/javascript" src="{% static 'plugins/modernizr.js' %}"></script>
-
     <!-- Magnific Popup javascript -->
     <script type="text/javascript" src="{% static 'plugins/magnific-popup/jquery.magnific-popup.min.js' %}"></script>
+    <!-- Sharrre javascript -->
+	<script type="text/javascript" src="{% static 'plugins/jquery.sharrre.js' %}"></script>
 
     <!-- Initialization of Plugins -->
     <script type="text/javascript" src="{% static 'js/template.js' %}"></script>
-
     <!-- Custom Scripts -->
     <script type="text/javascript" src="{% static 'js/custom.js' %}"></script>
-
 </body>
 </html>

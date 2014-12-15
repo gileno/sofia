@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% load static i18n %}
+
+{% block title %}{{ object }}{% endblock %}
+
+{% block body %}
+<div class="page-intro" style="margin-top: 0px;">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<ol class="breadcrumb">
+					<li><i class="fa fa-home pr-10"></i><a href="{% url 'core:index' %}">{% trans 'Início' %}</a></li>
+					<li><a href="{% url 'learn:project_list' %}">{% trans 'Projetos' %}</a></li>
+					{% if object.area %}
+					<li><a href="{{ object.area.get_absolute_url }}">{{ object.area }}</a></li>
+					{% endif %}
+					<li class="active">{{ object }}</li>
+				</ol>
+			</div>
+		</div>
+	</div>
+</div>
+<section class="main-container" style="margin-top: 0px;">
+	<div class="container">
+		<div class="row">
+			<!-- main start -->
+			<!-- ================ -->
+			<div class="main col-md-12">
+				<!-- page-title start -->
+				<!-- ================ -->
+				<h1 class="page-title margin-top-clear">{{ object }}</h1>
+				<!-- page-title end -->
+				<div class="row">
+                    {% if project.embedded_presentation %}
+                    <div class="col-md-6">
+                        <h3>{% trans 'Descrição' %}</h3>
+                        <div class="separator-2"></div>
+                        {{ project.description|linebreaks }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ project.embedded_presentation|safe }}
+                    </div>
+                    {% else %}
+					<div class="col-md-12">
+					    <h3>{% trans 'Descrição' %}</h3>
+                         <div class="separator-2"></div>
+                         {{ project.description|linebreaks }}
+					</div>
+                    {% endif %}
+                </div>
+				<div class="row">
+					<div class="col-xs-12 col-sm-6">
+						<h3>{% trans 'Compartilhar' %}</h3>
+						<div id="share" class="sharrre">
+                            <ul class="social-links clearfix">
+                                <li class="facebook"><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                <li class="twitter"><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                <li class="googleplus"><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                            </ul>
+                        </div>
+					</div>
+					<div class="col-xs-12 col-sm-6">
+						<h3>{% trans 'Mais informações e inscrições' %}</h3>
+                        {% if not object.timeless %}
+						<p><strong>{% trans 'Início' %}</strong>: {{ object.start_date|date:"d/m/Y"|default:'Não disponível' }}</p>
+                        <p><strong>{% trans 'Término' %}</strong>: {{ object.end_date|date:"d/m/Y"|default:'Não disponível' }}</p>
+                        {% endif %}
+                        {% if not object.open_enrollment %}
+                        <p>
+                            {% trans 'As inscrições ainda não estão abertas.' %}
+							{% if DEFAULT_CONTACT_EMAIL %}
+							{% trans 'Para mais informações entre em contato com' %}:
+							<a href="mailto:{{ DEFAULT_CONTACT_EMAIL }}">{{ DEFAULT_CONTACT_EMAIL }}</a>
+							{% endif %}
+                        </p>
+						{% else %}
+                        <a href="" class="btn btn-white margin-top-clear">{% trans 'Inscrever-me' %}</a>
+                        {% endif %}
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</section>
+{% endblock %}

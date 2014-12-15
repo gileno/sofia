@@ -5,9 +5,9 @@ from django.conf import settings
 urlpatterns = patterns(
     '',
     url(r'^', include('apps.core.urls', namespace='core')),
-    url(r'^', include('apps.learn.urls', namespace='learn')),
     url(r'^conta/', include('apps.accounts.urls', namespace='accounts')),
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/basico/', include(admin.site.urls)),
+    url(r'^', include('apps.learn.urls', namespace='learn')),
 )
 
 handler500 = 'apps.core.views.error500'
@@ -25,9 +25,9 @@ if settings.DEBUG:
             }
         ),
         url(
-            r'^404/$', handler404,
+            r'^errors/404/$', handler404,
         ),
         url(
-            r'^500/$', handler500,
+            r'^errors/500/$', handler500,
         ),
     )
