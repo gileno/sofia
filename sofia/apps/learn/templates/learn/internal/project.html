@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% load static i18n %}
+
+{% block body %}
+<div class="page-intro" style="margin-top: 0px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <ol class="breadcrumb">
+                    <li><i class="fa fa-home pr-10"></i><a href="{% url 'core:index' %}">{% trans 'Início' %}</a></li>
+                    <li><i class="fa fa-cubes pr-10"></i><a href="{% url 'accounts:dashboard' %}">{% trans 'Meus Projetos' %}</a></li>
+                    {% block project_breadcrump %}
+                    <li><i class="fa fa-cube pr-10"></i><a href="{% url 'learn:project_home' project.slug %}">{{ project }}</a></li>
+                    {% endblock %}
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="main-container" style="margin-top: 0px;">
+    <div class="container">
+        <div class="row">
+            <!-- sidebar start -->
+            <aside class="col-md-3">
+                <div class="sidebar">
+                    <div class="block clearfix">
+                        <h3 class="title">{{ project }}</h3>
+                        <div class="separator"></div>
+                        <nav>
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><a href="{% url 'learn:project_home' project.slug %}"><i class="fa fa-home pr-10"></i>{% trans 'Início' %}</a></li>
+                                <li><a href=""><i class="fa fa-play-circle-o pr-10"></i>{% trans 'Aulas e Materiais' %}</a></li>
+                                <li><a href=""><i class="fa fa-comments-o pr-10"></i>{% trans 'Discussões' %}</a></li>
+                                <li><a href=""><i class="fa fa-pencil-square-o pr-10"></i>{% trans 'Exercícios' %}</a></li>
+                                <li><a href=""><i class="icon-network pr-10"></i>{% trans 'Wiki' %}</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </aside>
+            <!-- sidebar end -->
+            <div class="main col-md-8 col-md-offset-1">
+                {% block project_body %}{% endblock %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

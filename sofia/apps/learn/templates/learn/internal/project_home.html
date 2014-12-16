@@ -1,0 +1,26 @@
+{% extends "learn/internal/project.html" %}
+
+{% load static i18n pagination %}
+
+{% block title %}
+{% trans 'Anúncios' %} | {{ project }}
+{% endblock %}
+
+{% block project_breadcrump %}
+<li><i class="fa fa-cube pr-10"></i>{{ project }}</li>
+{% endblock %}
+
+{% block project_body %}
+{% for announcement in fixed_announcements %}
+	{% include "learn/internal/_announcement.html" %}
+{% endfor %}
+
+{% for announcement in object_list %}
+	{% include "learn/internal/_announcement.html" %}
+{% empty %}
+<div class="alert alert-info" role="alert">
+	{% trans 'Nenhum anúncio publicado' %}
+</div>
+{% endfor %}
+{% paginate %}
+{% endblock %}

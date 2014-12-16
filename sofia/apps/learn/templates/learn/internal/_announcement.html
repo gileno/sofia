@@ -1,0 +1,28 @@
+{% load i18n %}
+<article class="clearfix blogpost">
+    <div class="blogpost-body">
+        <div class="post-info">
+            <span class="day">{{ announcement.created|date:"d" }}</span>
+            <span class="month">{{ announcement.created|date:"M Y" }}</span>
+        </div>
+        <div class="blogpost-content">
+            <header>
+                <h2 class="title"><a href="{% url 'learn:announcement_detail' project.slug announcement.slug %}">{{ announcement }}</a></h2>
+                <div class="submitted"><i class="fa fa-user pr-5"></i> {% trans 'por' %} <a href="#">{{ announcement.created_by }}</a></div>
+            </header>
+            {{ announcement.text|linebreaks }}
+        </div>
+    </div>
+    <footer class="clearfix">
+        <ul class="links pull-left">
+            <li><i class="fa fa-comment-o pr-5"></i> <a href="{% url 'learn:announcement_detail' project.slug announcement.slug %}#comments">{% trans 'Comentários' %}</a> |</li>
+			<li>
+                <i class="fa fa-tags pr-5"></i>
+                {% for tag in announcement.tags.all %}
+                <a href="#">{{ tag }}</a>{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            </li>
+        </ul>
+        <a class="pull-right link" href="{% url 'learn:announcement_detail' project.slug announcement.slug %}"><span>{% trans 'Leia mais' %}</span></a>
+    </footer>
+</article>

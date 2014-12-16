@@ -83,6 +83,12 @@ class Project(BaseModel):
     def get_absolute_url(self):
         return reverse('learn:project_detail', args=[self.slug])
 
+    def has_access_permission(self, user):
+        return (self.leader == user) or user.is_superuser or \
+            Enrollment.objects.filter(
+                user=user, project=self, blocked=False
+            ).exists()
+
     class Meta:
         verbose_name = 'Projeto'
         verbose_name_plural = 'Projetos'
@@ -108,6 +114,37 @@ class Enrollment(BaseModel):
     class Meta:
         verbose_name = _('Inscrição')
         verbose_name_plural = _('Inscrições')
+
+
+class Announcement(BaseModel):
+
+    title = models.CharField(_('Título'), max_length=100)
+    slug = models.CharField(_('Identificador'), max_length=100)
+    project = models.ForeignKey(
+        Project, verbose_name=_('Projeto'), related_name='announcements'
+    )
+    fixed = models.BooleanField(
+        _('Anúncio Fixo?'), blank=True, default=False
+    )
+    text = models.TextField(_('Mensagem'))
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, verbose_name=_('Criado por'),
+        related_name='announcements'
+    )
+    tags = TaggableManager(blank=True)
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse(
+            'learn:announcement_detail', args=[self.project.slug, self.slug]
+        )
+
+    class Meta:
+        verbose_name = _('Anúncio')
+        verbose_name_plural = _('Anúncios')
+        ordering = ['-created']
 
 
 class Module(BaseModel):
