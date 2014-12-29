@@ -70,19 +70,21 @@
                             <!-- header top dropdowns start -->
                             <!-- ================ -->
                             <div class="header-top-dropdown">
+                                {% block topsearch %}
                                 <div class="btn-group dropdown">
                                     <button type="button" class="btn dropdown-toggle" data-toggle="dropdown"><i class="fa fa-search"></i> {% trans 'Pesquisar' %}</button>
                                     <ul class="dropdown-menu dropdown-menu-right dropdown-animation">
                                         <li>
-                                            <form role="search" class="search-box">
+                                            <form role="search" class="search-box" action="{% url 'learn:project_list' %}">
                                                 <div class="form-group has-feedback">
-                                                    <input type="text" class="form-control" placeholder="{% trans 'Pesquisar' %}">
+                                                    <input type="text" class="form-control" name="q" placeholder="{% trans 'Pesquisar' %}">
                                                     <i class="fa fa-search form-control-feedback"></i>
                                                 </div>
                                             </form>
                                         </li>
                                     </ul>
                                 </div>
+                                {% endblock %}
                                 <div class="btn-group dropdown">
                                     <button type="button" class="btn dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
                                     {% if user.is_authenticated %}

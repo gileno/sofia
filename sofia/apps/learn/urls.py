@@ -14,12 +14,20 @@ urlpatterns = patterns(
     url(
         r'^(?P<slug>[\w_-]+)/$', 'project_detail', name='project_detail'
     ),
+    url(
+        r'^(?P<slug>[\w_-]+)/inscricao/$', 'project_enrollment',
+        name='project_enrollment'
+    ),
 )
 
 urlpatterns += patterns(
     'apps.learn.views.project',
     url(
         r'^(?P<slug>[\w_-]+)/inicio/$', 'project_home', name='project_home'
+    ),
+    url(
+        r'^(?P<slug>[\w_-]+)/anuncios/tag/(?P<tag>[\w_-]+)/$',
+        'announcements_tagged', name='announcements_tagged'
     ),
     url(
         r'^(?P<slug>[\w_-]+)/anuncios/(?P<announcement>[\w_-]+)/$',

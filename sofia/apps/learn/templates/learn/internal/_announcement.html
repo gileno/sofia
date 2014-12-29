@@ -19,7 +19,7 @@
 			<li>
                 <i class="fa fa-tags pr-5"></i>
                 {% for tag in announcement.tags.all %}
-                <a href="#">{{ tag }}</a>{% if not forloop.last %},{% endif %}
+                <a href="{% url 'learn:announcements_tagged' project.slug tag.slug %}">{{ tag }}</a>{% if not forloop.last %},{% endif %}
                 {% endfor %}
             </li>
         </ul>

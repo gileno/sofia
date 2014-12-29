@@ -7,9 +7,15 @@ from apps.learn.views.mixins import EnrollmentPermissionMixin
 
 class ProjectHomeView(EnrollmentPermissionMixin, generic.ListView):
 
-    queryset = Announcement.objects.filter(fixed=False)
     template_name = 'learn/internal/project_home.html'
     paginate_by = 5
+
+    def get_queryset(self):
+        queryset = Announcement.objects.filter(fixed=False)
+        tag = self.kwargs.get('tag', None)
+        if tag:
+            queryset = queryset.filter(tags__slug=tag)
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super(ProjectHomeView, self).get_context_data(**kwargs)
@@ -37,4 +43,5 @@ class AnnouncementDetailView(EnrollmentPermissionMixin, generic.DetailView):
         return context
 
 project_home = ProjectHomeView.as_view()
+announcements_tagged = ProjectHomeView.as_view()
 announcement_detail = AnnouncementDetailView.as_view()

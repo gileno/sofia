@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
@@ -84,10 +86,24 @@ class Project(BaseModel):
         return reverse('learn:project_detail', args=[self.slug])
 
     def has_access_permission(self, user):
-        return (self.leader == user) or user.is_superuser or \
-            Enrollment.objects.filter(
-                user=user, project=self, blocked=False
-            ).exists()
+        if (self.leader == user) or user.is_superuser:
+            enrollment = Enrollment(
+                user=user, project=self, is_staff=True, blocked=False
+            )
+            ok = True
+        else:
+            try:
+                enrollment = self.enrollments.get(user__pk=user.pk)
+            except Enrollment.DoesNotExist:
+                enrollment = None
+                ok = False
+            else:
+                ok = (not enrollment.blocked) and (self.already_started())
+        return ok, enrollment
+
+    def already_started(self):
+        today = datetime.date.today()
+        return self.start_date and today >= self.start_date
 
     class Meta:
         verbose_name = 'Projeto'

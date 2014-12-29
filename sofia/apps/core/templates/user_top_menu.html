@@ -40,10 +40,10 @@
                     {% for project in current_projects %}
                     <tr>
                         <td>
-                            <a href="#">{{ project }}</a>
+                            <a href="{% url 'learn:project_home' project.slug %}">{{ project }}</a>
                         </td>
                         <td>
-                            <a href="#" class="btn btn-default btn-sm">{% trans 'Acessar' %}</a>
+                            <a href="{% url 'learn:project_home' project.slug %}" class="btn btn-default btn-sm">{% trans 'Acessar' %}</a>
                         </td>
                     </tr>
                     {% empty %}

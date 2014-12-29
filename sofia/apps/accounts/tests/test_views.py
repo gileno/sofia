@@ -149,7 +149,7 @@ class ChangePasswordTestCase(TestCase):
             'old_password': '1234'
         }
         response = self.client.post(self.change_password_url, data)
-        form = response.context_data['form']
+        form = response.context['form']
         exp = len(form.errors) > 0
         self.assertTrue(exp)
         data['old_password'] = self.USER_PASSWORD
@@ -166,5 +166,5 @@ class ChangePasswordTestCase(TestCase):
         )
         self.user_without_password.set_unusable_password()
         response = self.client.get(self.change_password_url)
-        form = response.context_data['form']
+        form = response.context['form']
         self.assertTrue(isinstance(form, SetPasswordForm))
