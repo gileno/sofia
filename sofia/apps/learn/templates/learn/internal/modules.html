@@ -1,0 +1,48 @@
+{% extends "learn/internal/project.html" %}
+
+{% load static i18n %}
+
+{% block title %}
+{% trans 'Aulas e Materiais' %} | {{ project }}
+{% endblock %}
+
+{% block project_breadcrump %}
+<li>
+    <i class="fa fa-cube pr-10"></i><a href="{% url 'learn:project_home' project.slug %}">{{ project }}</a>
+</li>
+<li>
+    <i class="icon-book-open pr-10"></i>{% trans 'Aulas e Materiais' %}
+</li>
+{% endblock %}
+
+{% block project_body %}
+<h2 class="page-title">{% trans "Aulas e Materiais" %}</h2>
+<div class="panel-group" id="modules">
+    {% for module in object_list %}
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				<a data-toggle="collapse" href="#module-{{ module.pk }}" class="collapsed">
+					<i class="fa fa-folder"></i>{{ module }}
+				</a>
+			</h4>
+		</div>
+		<div id="module-{{ module.pk }}" class="panel-collapse collapse">
+			<div class="panel-body">
+                <ul>
+                    {% for lesson in module.lessons.all %}
+                    <li><a href="{% url 'learn:lesson_detail' project.slug module.slug lesson.slug %}">{{ lesson }}</a></li>
+                    {% empty %}
+                    <li>{% trans 'Nenhuma aula disponível para este módulo' %}</li>
+                    {% endfor %}
+                </ul>
+			</div>
+		</div>
+	</div>
+    {% empty %}
+    <div class="alert alert-info" role="alert">
+        {% trans 'Nenhum módulo disponível' %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

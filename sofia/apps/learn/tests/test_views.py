@@ -146,10 +146,10 @@ class ProjectHomeViewTestCase(TestCase):
         self.project1 = mommy.make(Project, leader=self.leader)
         self.project2 = mommy.make(Project)
         self.announcements_project1 = mommy.make(
-            Announcement, project=self.project1, _quantity=5
+            Announcement, project=self.project1, fixed=False, _quantity=5
         )
         self.announcements_project2 = mommy.make(
-            Announcement, project=self.project2, _quantity=10
+            Announcement, project=self.project2, fixed=False, _quantity=10
         )
         self.enrollment = mommy.make(
             Enrollment, project=self.project1, user=self.student,
@@ -218,11 +218,22 @@ class ProjectHomeViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_project_home_announcements(self):
-        self.client.login(username=self.leader.username, password='123')
+        self.client.login(username=self.superuser.username, password='123')
+
         project_home_url = reverse(
             'learn:project_home', args=[self.project1.slug]
         )
         response = self.client.get(project_home_url)
-        context = response.context
-        queryset = context['object_list']
+        queryset = response.context['object_list']
+        paginator = response.context['paginator']
         self.assertEqual(queryset.count(), 5)
+        self.assertEqual(paginator.num_pages, 1)
+
+        project_home_url = reverse(
+            'learn:project_home', args=[self.project2.slug]
+        )
+        response = self.client.get(project_home_url)
+        queryset = response.context['object_list']
+        paginator = response.context['paginator']
+        self.assertEqual(queryset.count(), 5)
+        self.assertEqual(paginator.num_pages, 2)

@@ -9,6 +9,8 @@ from taggit.managers import TaggableManager
 
 from apps.core.models import BaseModel
 
+from .utils import video_info
+
 
 class Area(BaseModel):
 
@@ -170,6 +172,9 @@ class Module(BaseModel):
     project = models.ForeignKey(
         Project, verbose_name=_('Projeto'), related_name='modules'
     )
+    release_date = models.DateField(
+        _('Data de Liberação'), null=True, blank=True
+    )
     order = models.PositiveSmallIntegerField(_('Ordem'), default=0, blank=True)
     description = models.TextField(_('Descrição'), blank=True)
 
@@ -191,6 +196,12 @@ class Lesson(BaseModel):
     )
     order = models.PositiveSmallIntegerField(_('Ordem'), default=0, blank=True)
     description = models.TextField(_('Descrição'), blank=True)
+
+    def get_absolute_url(self):
+        return reverse(
+            'learn:lesson_detail',
+            args=[self.module.project.slug, self.module.slug, self.slug]
+        )
 
     def __str__(self):
         return self.name
@@ -226,12 +237,30 @@ class Material(BaseModel):
     )
     file = models.FileField(
         _('Arquivo'), upload_to='lessons/materials', blank=True, null=True,
-        help_text=_('Utilizado para os tipos "Vídeo" e "Documento"')
+        help_text=_(
+            'Utilizado para os tipos "Vídeo" e "Documento", para vídeos'
+            ' use o formato mp4'
+        )
     )
     order = models.PositiveSmallIntegerField(
         _('Ordem'), default=0, blank=True,
         help_text=_('Ordem crescente da listagem dos materiais')
     )
+
+    def is_youtube(self):
+        if self.embedded:
+            info = video_info(self.embedded)
+            return info and info[1] == 'youtube'
+        return False
+
+    def is_vimeo(self):
+        if self.embedded:
+            info = video_info(self.embedded)
+            return info and info[1] == 'vimeo'
+        return False
+
+    def downloadable(self):
+        return self.material_type == self.DOCUMENT_TYPE
 
     def __str__(self):
         return self.name

@@ -30,7 +30,7 @@
                         <nav>
                             <ul class="nav nav-pills nav-stacked">
                                 <li><a href="{% url 'learn:project_home' project.slug %}"><i class="fa fa-home pr-10"></i>{% trans 'Início' %}</a></li>
-                                <li><a href=""><i class="fa fa-play-circle-o pr-10"></i>{% trans 'Aulas e Materiais' %}</a></li>
+                                <li><a href="{% url 'learn:module_list' project.slug %}"><i class="icon-book-open pr-10"></i>{% trans 'Aulas e Materiais' %}</a></li>
                                 <li><a href=""><i class="fa fa-comments-o pr-10"></i>{% trans 'Discussões' %}</a></li>
                                 <li><a href=""><i class="fa fa-pencil-square-o pr-10"></i>{% trans 'Exercícios' %}</a></li>
                                 <li><a href=""><i class="icon-network pr-10"></i>{% trans 'Wiki' %}</a></li>

@@ -1,0 +1,120 @@
+{% extends "learn/internal/project.html" %}
+
+{% load static i18n %}
+
+{% block title %}
+{% trans 'Aulas e Materiais' %} | {{ project }}
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'plugins/mediaelement/mediaelementplayer.min.css' %}" />
+{% endblock %}
+
+{% block project_breadcrump %}
+<li>
+    <i class="fa fa-cube pr-10"></i><a href="{% url 'learn:project_home' project.slug %}">{{ project }}</a>
+</li>
+<li>
+    <i class="icon-book-open pr-10"></i><a href="{% url 'learn:module_list' project.slug %}">{% trans 'Aulas e Materiais' %}</a>
+</li>
+<li>
+    <i class="fa fa-folder pr-10"></i><a href="#">{{ object.module }}</a>
+</li>
+<li>
+    <i class="fa fa-play-circle-o pr-10"></i> {{ object }}
+</li>
+{% endblock %}
+
+{% block project_body %}
+<h2 class="page-title">{{ object }}</h2>
+{{ lesson.description|linebreaks }}
+<ul class="nav nav-tabs" role="tablist">
+	<li class="active">
+        <a href="#htab1" role="tab" data-toggle="tab"><i class="fa fa-play-circle pr-5"></i>{% trans 'Vídeos e Materiais' %}</a>
+    </li>
+	<li><a href="#htab2" role="tab" data-toggle="tab"><i class="fa fa-comments-o pr-5"></i>{% trans 'Discussões' %}</a></li>
+</ul>
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="htab1">
+        <ul>
+            {% for material in object.materials.all %}
+            <li>
+                {% if material.downloadable %}
+                <a href="{{ material.file.url }}" target="_blank">{{ material }}</a>
+                {% else %}
+                <a data-toggle="modal" data-target="#material-{{ material.pk }}">{{ material }}</a>
+                <div class="modal fade" id="material-{{ material.pk }}" tabindex="-1" role="dialog" aria-labelledby="#material-label-{{ material.pk }}" aria-hidden="true">
+					<div class="modal-dialog modal-lg text-center">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{% trans 'Fechar' %}</span></button>
+								<h4 class="modal-title" id="material-label-{{ material.pk }}">{{ material }}</h4>
+							</div>
+							<div class="modal-body">
+                                <div class="videocontent">
+                                    {% if material.is_youtube %}
+                                    <video id="video-material-{{ material.pk }}" width="640" height="264">
+                                        <source type="video/youtube" src="{{ material.embedded }}" />
+                                    </video>
+                                    {% elif material.embedded %}
+                                    {{ material.embedded|safe }}
+                                    {% else %}
+                                    <video id="video-material-{{ material.pk }}" width="640" height="480" src="{{ material.file.url }}"></video>
+                                    {% endif %}
+                                </div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-sm btn-dark" data-dismiss="modal">{% trans 'Fechar' %}</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="tab-pane fade" id="htab2">
+        <h4>
+            {% trans 'Discussões relacionadas' %}
+        </h4>
+        <div class="text-right">
+            <a href="#" class="btn btn-primary btn-sm">{% trans 'Nova Discussão' %}</a>
+        </div>
+        <ul>
+            <li>
+                <a href="#">Erro ao rodar o exercício proposto</a>
+            </li>
+            <li>
+                <a href="#">Alguém conseguiu realizar a atividade proposta?</a>
+            </li>
+            <li>
+                <a href="#">Pequena dúvida</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<nav>
+  <ul class="pager">
+    <li class="previous"><a href="#"><span aria-hidden="true">&larr;</span> {% trans 'Anterior' %}</a></li>
+    <li class="next"><a href="#">{% trans 'Próxima' %} <span aria-hidden="true">&rarr;</span></a></li>
+  </ul>
+</nav>
+{% endblock %}
+
+{% block javascript %}
+<script src="{% static 'plugins/mediaelement/mediaelement-and-player.min.js' %}"></script>
+<script>
+  $(function(){
+      $('video,audio').mediaelementplayer();
+      $(".modal").on('hidden.bs.modal', function(e){
+          var selector = "#" + $(this).attr("id") + " video";
+          if($(selector).length > 0){
+              var player = new MediaElementPlayer(selector);
+              player.pause();
+          }
+      });
+  });
+</script>
+{% endblock %}

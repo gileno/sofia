@@ -34,3 +34,14 @@ urlpatterns += patterns(
         'announcement_detail', name='announcement_detail'
     ),
 )
+
+urlpatterns += patterns(
+    'apps.learn.views.lesson',
+    url(
+        r'^(?P<slug>[\w_-]+)/aulas/$', 'module_list', name='module_list'
+    ),
+    url(
+        r'^(?P<slug>[\w_-]+)/aulas/(?P<module>[\w_-]+)/(?P<lesson>[\w_-]+)/$',
+        'lesson_detail', name='lesson_detail'
+    ),
+)

@@ -36,4 +36,5 @@ class EnrollmentPermissionMixin(object):
             **kwargs
         )
         context['enrollment'] = self.enrollment
+        context[self.context_project_name] = self.get_project()
         return context
