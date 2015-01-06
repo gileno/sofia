@@ -16,9 +16,9 @@ settings:
 run:
 	@python manage.py runserver 8000
 
-help:
-	grep '^[^#[:space:]].*:' Makefile | awk -F ":" '{print $$1}'
-
 setup: settings deps clean
 	@python manage.py syncdb
 	@python manage.py migrate
+
+help:
+	grep '^[^#[:space:]].*:' Makefile | awk -F ":" '{print $$1}'
