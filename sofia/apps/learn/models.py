@@ -181,6 +181,16 @@ class Module(BaseModel):
     def __str__(self):
         return self.name
 
+    def previous(self):
+        return self.project.modules.filter(
+            order__lte=self.order, pk__lt=self.pk
+        ).first()
+
+    def next(self):
+        return self.project.modules.filter(
+            order__gte=self.order, pk__gt=self.pk
+        ).first()
+
     class Meta:
         verbose_name = _('Módulo')
         verbose_name_plural = _('Módulos')
@@ -202,6 +212,26 @@ class Lesson(BaseModel):
             'learn:lesson_detail',
             args=[self.module.project.slug, self.module.slug, self.slug]
         )
+
+    def previous(self):
+        prev = self.module.lessons.filter(
+                order__lte=self.order, pk__lt=self.pk
+        ).first()
+        if prev is None:
+            prev_module = self.module.previous()
+            if prev_module:
+                prev = prev_module.lessons.last()
+        return prev
+
+    def next(self):
+        next_lesson = self.module.lessons.filter(
+            order__gte=self.order, pk__gt=self.pk
+        ).first()
+        if next_lesson is None:
+            next_module = self.module.next()
+            if next_module:
+                next_lesson = next_module.lessons.first()
+        return next_lesson
 
     def __str__(self):
         return self.name

@@ -97,8 +97,16 @@
 </div>
 <nav>
   <ul class="pager">
-    <li class="previous"><a href="#"><span aria-hidden="true">&larr;</span> {% trans 'Anterior' %}</a></li>
-    <li class="next"><a href="#">{% trans 'Próxima' %} <span aria-hidden="true">&rarr;</span></a></li>
+    {% with previous_lesson=object.previous %}
+         {% if previous_lesson %}
+        <li class="previous"><a href="{{ previous_lesson.get_absolute_url }}"><span aria-hidden="true">&larr;</span> {% trans 'Anterior' %}</a></li>
+        {% endif %}
+    {% endwith %}
+    {% with next_lesson=object.next %}
+        {% if next_lesson %}
+        <li class="next"><a href="{{ next_lesson.get_absolute_url }}">{% trans 'Próxima' %} <span aria-hidden="true">&rarr;</span></a></li>
+        {% endif %}
+    {% endwith %}
   </ul>
 </nav>
 {% endblock %}
