@@ -41,6 +41,10 @@ urlpatterns += patterns(
         r'^(?P<slug>[\w_-]+)/aulas/$', 'module_list', name='module_list'
     ),
     url(
+        r'^(?P<slug>[\w_-]+)/aulas/(?P<module>[\w_-]+)/$',
+        'module_detail', name='module_detail'
+    ),
+    url(
         r'^(?P<slug>[\w_-]+)/aulas/(?P<module>[\w_-]+)/(?P<lesson>[\w_-]+)/$',
         'lesson_detail', name='lesson_detail'
     ),

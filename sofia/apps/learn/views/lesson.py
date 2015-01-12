@@ -22,6 +22,40 @@ class ModuleListView(EnrollmentPermissionMixin, generic.ListView):
         return queryset
 
 
+class LessonListView(EnrollmentPermissionMixin, generic.ListView):
+
+    template_name = 'learn/internal/lessons.html'
+
+    _module = None
+
+    def get_module(self):
+        project = self.get_project()
+        if self._module is None:
+            module_slug = self.kwargs.get('module')
+            if self.enrollment.is_staff:
+                self._module = get_object_or_404(
+                    project.modules.all(), slug=module_slug
+                )
+            else:
+                available_modules = project.modules.filter(
+                    release_date__isnull=False,
+                    release_date__gte=datetime.date.today()
+                )
+                self._module = get_object_or_404(
+                    available_modules, slug=module_slug
+                )
+        return self._module
+
+    def get_queryset(self):
+        module = self.get_module()
+        return module.lessons.all()
+
+    def get_context_data(self, **kwargs):
+        context = super(LessonListView, self).get_context_data(**kwargs)
+        context['current_module'] = self.get_module()
+        return context
+
+
 class LessonDetailView(EnrollmentPermissionMixin, generic.DetailView):
 
     template_name = 'learn/internal/lesson.html'
@@ -42,4 +76,5 @@ class LessonDetailView(EnrollmentPermissionMixin, generic.DetailView):
 
 
 module_list = login_required(ModuleListView.as_view())
+module_detail = login_required(LessonListView.as_view())
 lesson_detail = login_required(LessonDetailView.as_view())

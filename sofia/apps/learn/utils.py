@@ -1,5 +1,6 @@
 from urllib import parse
 
+
 def video_info(value):
     """
     Examples:

@@ -18,7 +18,7 @@
     <i class="icon-book-open pr-10"></i><a href="{% url 'learn:module_list' project.slug %}">{% trans 'Aulas e Materiais' %}</a>
 </li>
 <li>
-    <i class="fa fa-folder pr-10"></i><a href="#">{{ object.module }}</a>
+    <i class="fa fa-folder pr-10"></i><a href="{% url 'learn:module_detail' project.slug object.module.slug %}">{{ object.module }}</a>
 </li>
 <li>
     <i class="fa fa-play-circle-o pr-10"></i> {{ object }}
@@ -53,13 +53,13 @@
 							<div class="modal-body">
                                 <div class="videocontent">
                                     {% if material.is_youtube %}
-                                    <video id="video-material-{{ material.pk }}" width="640" height="264">
+                                    <video id="video-material-{{ material.pk }}" width="560" height="315">
                                         <source type="video/youtube" src="{{ material.embedded }}" />
                                     </video>
                                     {% elif material.embedded %}
                                     {{ material.embedded|safe }}
                                     {% else %}
-                                    <video id="video-material-{{ material.pk }}" width="640" height="480" src="{{ material.file.url }}"></video>
+                                    <video id="video-material-{{ material.pk }}" width="560" height="315" src="{{ material.file.url }}"></video>
                                     {% endif %}
                                 </div>
 							</div>
@@ -82,17 +82,11 @@
         <div class="text-right">
             <a href="#" class="btn btn-primary btn-sm">{% trans 'Nova Discussão' %}</a>
         </div>
-        <ul>
-            <li>
-                <a href="#">Erro ao rodar o exercício proposto</a>
-            </li>
-            <li>
-                <a href="#">Alguém conseguiu realizar a atividade proposta?</a>
-            </li>
-            <li>
-                <a href="#">Pequena dúvida</a>
-            </li>
-        </ul>
+        <div class="alert alert-info" role="alert">
+            {% blocktrans %}
+            Nenhuma discussão criada para esta aula, <a href="#">clique aqui</a> para criar uma.
+            {% endblocktrans %}
+        </div>
     </div>
 </div>
 <nav>

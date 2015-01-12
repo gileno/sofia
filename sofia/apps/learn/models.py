@@ -181,6 +181,11 @@ class Module(BaseModel):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse(
+            'learn:module_detail', args=[module.project.slug, module.slug]
+        )
+
     def previous(self):
         return self.project.modules.filter(
             order__lte=self.order, pk__lt=self.pk
@@ -215,7 +220,7 @@ class Lesson(BaseModel):
 
     def previous(self):
         prev = self.module.lessons.filter(
-                order__lte=self.order, pk__lt=self.pk
+            order__lte=self.order, pk__lt=self.pk
         ).first()
         if prev is None:
             prev_module = self.module.previous()

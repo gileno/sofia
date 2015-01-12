@@ -1,0 +1,60 @@
+{% extends "learn/internal/project.html" %}
+
+{% load static i18n %}
+
+{% block title %}
+{{ current_module }} | {{ project }}
+{% endblock %}
+
+{% block project_breadcrump %}
+<li>
+    <i class="fa fa-cube pr-10"></i><a href="{% url 'learn:project_home' project.slug %}">{{ project }}</a>
+</li>
+<li>
+    <i class="icon-book-open pr-10"></i><a href="{% url 'learn:module_list' project.slug %}">{% trans 'Aulas e Materiais' %}</a>
+</li>
+<li>
+    <i class="fa fa-folder pr-10"></i>{{ current_module }}
+</li>
+{% endblock %}
+
+{% block project_body %}
+<h2 class="page-title">{{ current_module }}</h2>
+<div class="panel-group" id="modules">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" href="#module-{{ current_module.pk }}">
+                    <i class="fa fa-folder"></i>{{ current_module }}
+                </a>
+            </h4>
+        </div>
+        <div id="module-{{ current_module.pk }}" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <ul>
+                    {% for lesson in object_list %}
+                    <li><a href="{% url 'learn:lesson_detail' project.slug current_module.slug lesson.slug %}">{{ lesson }}</a></li>
+                    {% empty %}
+                    <li>{% trans 'Nenhuma aula disponível para este módulo' %}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<nav>
+  <ul class="pager">
+    {% with previous_module=current_module.previous %}
+         {% if previous_module %}
+        <li class="previous"><a href="{% url 'learn:module_detail' project.slug previous_module.slug %}"><span aria-hidden="true">&larr;</span> {% trans 'Anterior' %}</a></li>
+        {% endif %}
+    {% endwith %}
+    {% with next_module=current_module.next %}
+        {% if next_module %}
+        <li class="next"><a href="{% url 'learn:module_detail' project.slug next_module.slug %}">{% trans 'Próxima' %} <span aria-hidden="true">&rarr;</span></a></li>
+        {% endif %}
+    {% endwith %}
+  </ul>
+</nav>
+
+{% endblock %}

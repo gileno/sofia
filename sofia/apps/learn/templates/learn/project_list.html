@@ -41,7 +41,7 @@
                                 <li><a href="{% url 'learn:project_list' %}">{% trans 'Todas as áreas' %}</a></li>
                                 {% get_areas as areas %}
                                 {% for area in areas %}
-                                <li{% if area == current_area %} class="active"{% endif %}><a href="{{ area.get_absolute_url }}">{{ area }}</a></li>
+                                <li{% if area == current_area %} class="active"{% endif %}><a href="{{ area.get_absolute_url }}" title="{% trans 'Projetos da área:' %} {{ area }}">{{ area }}</a></li>
                                 {% endfor %}
                             </ul>
                         </nav>
@@ -69,12 +69,20 @@
 							<p>
 							    {{ project.description|truncatewords:"30" }}
 							</p>
-                            <div class="elements-list pull-right">
-                                <i class="fa fa-tags"></i>
-                                {% for tag in project.tags.all %}
-								<a href="{% url 'learn:project_list_tag' tag.slug %}" class="wishlist">{{ tag }}</a>
-								{% endfor %}
-							</div>
+                            <ul class="elements-list pull-right">
+                                {% if project.area %}
+                                <li>
+                                    <i class="glyphicon glyphicon-link"></i>
+                                    <a title="{% trans 'Projetos da área:' %} {{ project.area }}" href="{{ project.area.get_absolute_url }}">{{ project.area }}</a>
+                                </li>
+                                {% endif %}
+                                <li>
+                                    <i class="fa fa-tags"></i>
+                                    {% for tag in project.tags.all %}
+                                    <a href="{% url 'learn:project_list_tag' tag.slug %}" class="wishlist">{{ tag }}</a>{% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                </li>
+							</ul>
 						</div>
 					</div>
                 </div>
