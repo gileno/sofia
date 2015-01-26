@@ -6,6 +6,7 @@ urlpatterns = patterns(
     '',
     url(r'^', include('apps.core.urls', namespace='core')),
     url(r'^conta/', include('apps.accounts.urls', namespace='accounts')),
+    url(r'^forum/', include('apps.forum.urls', namespace='forum')),
     url(r'^admin/basico/', include(admin.site.urls)),
     url(r'^', include('apps.learn.urls', namespace='learn')),
 )

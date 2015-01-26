@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'apps.core',
     'apps.accounts',
     'apps.learn',
+    'apps.forum',
 )
 
 MIDDLEWARE_CLASSES = (

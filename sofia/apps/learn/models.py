@@ -183,7 +183,7 @@ class Module(BaseModel):
 
     def get_absolute_url(self):
         return reverse(
-            'learn:module_detail', args=[module.project.slug, module.slug]
+            'learn:module_detail', args=[self.project.slug, self.slug]
         )
 
     def previous(self):

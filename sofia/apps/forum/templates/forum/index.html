@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% load i18n static %}
+
+{% block title %}{% trans 'Discussões' %}{% endblock %}
+
+{% block body %}
+<div class="page-intro" style="margin-top: 0px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <ol class="breadcrumb">
+                    <li><i class="fa fa-home pr-10"></i><a href="{% url 'core:index' %}">{% trans 'Início' %}</a></li>
+                    <li class="active">{% trans 'Discussões' %}</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="main-container" style="margin-top: 0px;">
+    <div class="container">
+        <div class="row">
+            <aside class="col-md-3">
+				<div class="sidebar">
+					<div class="block clearfix">
+                        <h3 class="title">{% trans 'Tópicos' %}</h3>
+                        <div class="separator"></div>
+						<nav>
+							<ul class="nav nav-pills nav-stacked">
+                                {% for tag in tags|slice:"20" %}
+                                <li><a href="#">{{ tag }}</a></li>
+                                {% endfor %}
+							</ul>
+						</nav>
+					</div>
+				</div>
+			</aside>
+            <div class="main col-md-9">
+                <div class="row">
+                    <div class="col-xs-8">
+                        <ul class="list-inline">
+                            <li>{% trans 'Tópicos' %}:</li>
+                            <li><a class="btn btn-light-gray btn-sm" href="#">{% trans 'Mais recentes' %}</a></li>
+                            <li><a class="btn btn-light-gray btn-sm" href="#">{% trans 'Sem respostas' %}</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-4 text-right">
+                        <ul class="list-inline">
+                            <li><a href="#" class="btn btn-sm btn-primary">{% trans 'Novo Tópico' %}</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="comments">
+                    {% for topic in object_list %}
+                    <div class="comment clearfix">
+						<div class="comment-avatar">
+							<img src="{% static 'images/avatar.jpg' %}" alt="avatar">
+						</div>
+						<div class="comment-content clearfix">
+							<h3><a href="#">{{ topic }}</a></h3>
+							<div class="comment-meta">{% trans 'por' %} <a href="#">{{ topic.author }}</a> | {{ topic.modified|timesince }}</div>
+							<div class="comment-body">
+                                {{ topic.text|truncatewords:"50" }}
+								<a href="blog-post.html" class="btn btn-gray more pull-right"><i class="fa fa-reply"></i> {% trans 'Responder' %}</a>
+							</div>
+						</div>
+					</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
