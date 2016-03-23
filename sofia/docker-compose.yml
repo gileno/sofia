@@ -1,0 +1,18 @@
+postgres:
+  restart: always
+  image: postgres:9.3
+  ports:
+    - "5432:5432"
+  environment:
+    - POSTGRES_DB=sofia
+  volumes:
+    - /data/sofia/postgresql:/var/lib/postgresql/data
+web:
+  build: .
+  restart: always
+  volumes:
+    - .:/sofia/
+  ports:
+    - "8000:8000"
+  links:
+      - postgres:postgres
