@@ -1,0 +1,15 @@
+DEBUG = True
+
+TEMPLATE_DEBUG = True
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'sofia',
+        'USER': 'postgres',
+        'PASSWORD': '',
+        'HOST': 'postgres',
+    }
+}
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
